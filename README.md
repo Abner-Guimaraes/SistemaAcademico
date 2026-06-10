@@ -1,2 +1,5 @@
-# SoftwareArchitectureLab
-A simple academic management system developed to practice Object-Oriented Programming concepts, including encapsulation, inheritance, polymorphism, and abstraction. The project also explores clean code, design patterns, refactoring, TDD, software architecture, testing, and modern software engineering practices.
+# Academic System — Trabalho POO
+
+Fork do trabalho semestral de Orientação a Objetos (UNIFAL-MG). O código-fonte Maven está em `academic-system/`. A documentação do grupo está em `docs/contexto.md`.
+
+Repositório base do professor: https://github.com/pagliares/academic-system-semester-assignment-2026
