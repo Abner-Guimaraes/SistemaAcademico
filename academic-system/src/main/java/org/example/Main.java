@@ -12,6 +12,8 @@ public final class Main {
     public static void main(String[] args) {
         Main application = new Main();
         application.run(args);
+        
+        System.out.println("ola");
     }
 
     void run(String[] args) {
