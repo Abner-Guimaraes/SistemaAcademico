@@ -6,4 +6,5 @@ public class Atividade extends Avaliacao{
 		super(nome,valor, peso);
 	}
 
+	public double getPeso() {return 0.3;}
 }
