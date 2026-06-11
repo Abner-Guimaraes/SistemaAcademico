@@ -5,15 +5,15 @@ import java.util.ArrayList;
 public class Turma {
 	
 	private String codigo;
-	private String nome;
+	private String titulo;
 	private ArrayList<Avaliacao> avaliacoes;
 
 	
 	
 
-    public Turma(String codigo, String nome) {
+    public Turma(String codigo, String titulo) {
     	this.codigo = codigo;
-    	this.nome = nome;
+    	this.titulo = titulo;
     	this.avaliacoes = new ArrayList<>();
     	
     }
@@ -31,8 +31,8 @@ public class Turma {
     }
 
     public String getCodigo() {return codigo;}
-    public String getnome() {return nome;}
-    
+    public String getTitulo() {return titulo;}
+ 
     public List<Avaliacao> getAvaliacoes() { 
         return new ArrayList<>(avaliacoes); 
     }

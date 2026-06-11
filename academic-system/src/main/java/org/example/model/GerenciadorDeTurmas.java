@@ -7,11 +7,11 @@ import java.util.List;
 public class GerenciadorDeTurmas {
     
     // Lista que simula o banco de dados do sistema
-    private List<Turma> turmasDaEscola = new ArrayList<>();
+    private List<Turma> turmas = new ArrayList<>();
 
     // Método para salvar as turmas que existem na faculdade
     public void salvarTurma(Turma turma) {
-        turmasDaEscola.add(turma);
+        turmas.add(turma);
     }
 
     // Método principal que gerencia o registro das avaliações (Cobre AC4 e AC8)
@@ -23,7 +23,7 @@ public class GerenciadorDeTurmas {
         }
 
         // Se for professor, procura a turma pelo código (AC4)
-        for (Turma turma : turmasDaEscola) {
+        for (Turma turma : turmas) {
             if (turma.getCodigo().equals(codigoTurma)) {
                 turma.adicionarAvaliacao(avaliacao); // Registra na turma
                 return; // Operação concluída com sucesso

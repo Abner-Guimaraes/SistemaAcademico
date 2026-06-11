@@ -12,16 +12,17 @@ Diário de bordo do desenvolvimento do Sistema Acadêmico. Registre aqui o que e
 
 | Data de início | História / Tarefa | Descrição | Responsável | Observações |
 |----------------|-------------------|-----------|-------------|-------------|
-| _DD/MM/AAAA_   | _ex.: US-2361_    | _O que está sendo feito agora_ | _Nome_ | _Bloqueios, links, dúvidas_ |
+| 10/06/2026     | US-2363           | Registrar Turmas por Entrada de Teclado | Desenvolvedor | Domínio rascunhado no Miro. Aguardando Code Review da US-2361 para iniciar mapeamento de testes. |
 
-### Detalhamento (opcional)
+### Detalhamento
 
 Use esta seção para notas mais longas sobre a tarefa atual:
 
-- **Objetivo:**
-- **Critérios de aceite relevantes:**
-- **Arquivos alterados:**
-- **Próximos passos:**
+- **Objetivo:** Permitir que um professor (ADMIN) registre turmas acadêmicas por meio de entrada via teclado.
+- **Critérios de aceite relevantes:** AC1 a AC8 (Foco inicial na validação de permissões de usuário, validação de dados inválidos e delegação arquitetural via Controller/Service).
+- **Arquivos alterados:** `TurmaService.java` (Validação de código e título).
+- **Próximos passos:** 1. Criar a classe `TurmaController` para implementar a delegação arquitetural exigida pelo AC7.
+  2. Integrar a leitura de teclado utilizando `java.util.Scanner` de forma provisória no ponto de entrada.
 
 ---
 
@@ -29,16 +30,18 @@ Use esta seção para notas mais longas sobre a tarefa atual:
 
 | Data de conclusão | História / Requisito | Resumo do que foi entregue | Commit / PR (opcional) |
 |-------------------|----------------------|----------------------------|------------------------|
-| _DD/MM/AAAA_      | _ex.: TUS-2383_      | _Breve descrição da entrega_ | _link ou hash_ |
+| 10/06/2026        | US-2361              | Registrar Avaliação na Turma | *Aguardando push* |
 
-### Registro detalhado (opcional)
+### Registro detalhado
 
-#### _DD/MM/AAAA — Título da entrega_
+#### 10/06/2026 — Registrar Avaliação na Turma (US-2361)
 
-- **História:** _código e nome_
-- **O que foi implementado:**
-- **Como foi validado:** _testes manuais, `mvn test`, etc._
-- **Observações / débito técnico:**
+- **História:** US-2361 - Registrar Avaliação
+- **O que foi implementado:** - Modelo de domínio completo: `Turma`, `Avaliacao` (Classe Abstrata) e suas especializações (`Prova`, `TrabalhoPratico`, `Seminario`, `Atividade`).
+  - Implementação do Design Pattern *Factory* (`AvaliacaoFactory`) para lidar com a criação dos tipos corretos a partir de strings.
+  - Implementação de um `GerenciadorDeTurmas` para validar a existência da turma e os privilégios do usuário (PROFESSOR) antes do registro.
+- **Como foi validado:** Testes unitários via JUnit (`RegistrodeAvaliacaoTest.java`). Cobertura de 100% dos Critérios de Aceitação (AC1 ao AC8).
+- **Observações / débito técnico:** O código foi refatorado após a aprovação nos testes, isolando as regras de negócio corretamente. Aprendizado prático do ciclo Red-Green-Refactor do TDD.
 
 ---
 
