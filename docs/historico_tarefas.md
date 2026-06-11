@@ -12,17 +12,12 @@ Diário de bordo do desenvolvimento do Sistema Acadêmico. Registre aqui o que e
 
 | Data de início | História / Tarefa | Descrição | Responsável | Observações |
 |----------------|-------------------|-----------|-------------|-------------|
-| 10/06/2026     | US-2363           | Registrar Turmas por Entrada de Teclado | Desenvolvedor | Domínio rascunhado no Miro. Aguardando Code Review da US-2361 para iniciar mapeamento de testes. |
+| -     | -           | Nenhuma tarefa em andamento no momento | - | - |
 
 ### Detalhamento
 
 Use esta seção para notas mais longas sobre a tarefa atual:
-
-- **Objetivo:** Permitir que um professor (ADMIN) registre turmas acadêmicas por meio de entrada via teclado.
-- **Critérios de aceite relevantes:** AC1 a AC8 (Foco inicial na validação de permissões de usuário, validação de dados inválidos e delegação arquitetural via Controller/Service).
-- **Arquivos alterados:** `TurmaService.java` (Validação de domínio), `TurmaController.java` (Delegação arquitetural inserida).
-- **Próximos passos:** 1. Integrar a leitura de teclado utilizando `java.util.Scanner` de forma provisória no ponto de entrada (`Main.java`).
-  2. Finalizar a US-2363.
+(Nenhuma tarefa em andamento)
 
 ---
 
@@ -31,8 +26,20 @@ Use esta seção para notas mais longas sobre a tarefa atual:
 | Data de conclusão | História / Requisito | Resumo do que foi entregue | Commit / PR (opcional) |
 |-------------------|----------------------|----------------------------|------------------------|
 | 10/06/2026        | US-2361              | Registrar Avaliação na Turma | *Aguardando push* |
+| 11/06/2026        | US-2363              | Registrar Turmas por Entrada de Teclado | *Aguardando push* |
 
 ### Registro detalhado
+
+#### 11/06/2026 — Registrar Turmas por Entrada de Teclado (US-2363)
+
+- **História:** US-2363 - Register classes through keyboard input
+- **O que foi implementado:** 
+  - Lógica de validação de domínio em `TurmaService` para garantir que `codigo` e `titulo` da turma não sejam nulos ou vazios (AC3, AC4).
+  - Criação da classe `TurmaController` para abstrair e delegar chamadas de regras de negócio, conforme exigido pelo AC7.
+  - Implementação provisória no ponto de entrada (`Main.java`) com uso de `java.util.Scanner` para coletar o código e título da turma no console (AC1).
+  - Testes unitários preexistentes (`RegistrodeTurmasTest`) executados e aprovados para a camada de serviço.
+- **Como foi validado:** Execução da suíte de testes do JUnit 5 (`mvn clean test`). Execução e simulação do input via console com `mvn exec:java`. 
+- **Observações / débito técnico:** A auditoria (logging - AC8) foi ignorada temporariamente por não existirem as ferramentas propostas na arquitetura ainda (TUS-2390). O uso de scanner no `Main` é provisório e deve ser evoluído na US-2364.
 
 #### 10/06/2026 — Registrar Avaliação na Turma (US-2361)
 

@@ -32,5 +32,33 @@ public class Main {
         } catch (Exception e) {
             System.out.println("Erro ao tentar registrar: " + e.getMessage());
         }
+        
+        System.out.println("-----------------------------------");
+        System.out.println("--- US-2363: Cadastro de Turmas ---");
+        java.util.Scanner scanner = new java.util.Scanner(System.in);
+        org.example.service.TurmaService turmaService = new org.example.service.TurmaService();
+        org.example.controller.TurmaController turmaController = new org.example.controller.TurmaController(turmaService);
+
+        System.out.println("Simulando usuário logado como: ADMIN");
+        String usuarioParaTurma = "ADMIN";
+        
+        System.out.print("Digite o código da nova turma: ");
+        String codigo = scanner.nextLine();
+        
+        System.out.print("Digite o título da nova turma: ");
+        String titulo = scanner.nextLine();
+
+        try {
+            turmaController.registrarTurma(codigo, titulo, usuarioParaTurma);
+            System.out.println("Sucesso: Turma '" + titulo + "' registrada!");
+            System.out.println("Turmas cadastradas atualmente na memória do Service:");
+            for (Turma t : turmaController.listarTurmas()) {
+                System.out.println("- " + t.getCodigo() + " : " + t.getTitulo());
+            }
+        } catch (org.example.exception.AcademicSystemException e) {
+            System.out.println("Erro de Negócio ao registrar turma: " + e.getMessage());
+        }
+        
+        scanner.close();
     }
 }
