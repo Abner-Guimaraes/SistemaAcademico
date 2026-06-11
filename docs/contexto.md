@@ -278,11 +278,14 @@ java -jar target/academic-system-1.0-SNAPSHOT.jar
 
 ---
 
-## 12. Progresso do grupo
+## 12. Histórias Finalizadas
+
+Esta seção apresenta as User Stories (US) que já foram implementadas, testadas, revisadas e aceitas:
 
 | História | Status | Observação |
 |----------|--------|------------|
-| US-2361 | Pendente | Primeira história a implementar |
+| **US-2361** | Finalizada | Registrar Avaliação na Turma (Modelo de domínio e testes concluídos) |
+| **US-2363** | Finalizada | Registrar Turmas por Entrada de Teclado (Validação de domínio, Controller e Scanner implementados e testados) |
 | Demais (02–59) | Pendente | Seguir sequência do enunciado |
 
 ### Melhorias locais mantidas (sem conflito com o padrão do professor)

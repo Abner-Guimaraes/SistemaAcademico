@@ -13,6 +13,7 @@ Este documento registra decisões de arquitetura, design de código, padrões ad
 |---|--------|------|--------|
 | ADR-001 | Uso do Padrão Factory para Criação de Avaliações | 10/06/2026 | Aceita |
 | ADR-002 | Validação de Domínio via Cláusulas de Guarda no Service (Provisória) | 11/06/2026 | Aceita |
+| ADR-003 | Delegação de Operações via Controller | 11/06/2026 | Aceita |
 
 ---
 
@@ -71,3 +72,32 @@ As cláusulas de guarda mantêm o fluxo do método ("happy path") livre de aninh
 - **Positivas:** O código fica linear e fácil de ler; previne a alocação de objetos inválidos e facilita os testes unitários (`RegistrodeTurmasTest`).
 - **Negativas / trade-offs:** A lógica de validação é hardcoded no serviço, violando parcialmente o encapsulamento do domínio ou o futuro uso do `Jakarta Bean Validation`.
 - **Ações de acompanhamento:** Refatorar essa camada quando a história TUS-2371 (Jakarta Bean Validation) for iniciada, transferindo a validação para anotações nas entidades e validadores centrais.
+
+---
+
+## ADR-003 — Delegação de Operações via Controller
+
+| Campo | Conteúdo |
+|-------|----------|
+| **Status** | Aceita |
+| **Data** | 11/06/2026 |
+| **Autor(es)** | Desenvolvedor |
+| **História relacionada** | US-2363 |
+
+### Contexto / Problema
+
+A US-2363 estabelece (no AC7) que as requisições oriundas da entrada de usuário devem passar pela camada de "controller" e "service". Fazer a chamada direta da interface de usuário (`Main.java` e `Scanner`) para o `TurmaService` uniria camadas que futuramente devem estar separadas (UI CLI/JavaFX e lógica de aplicação).
+
+### Decisão Tomada
+
+Criada a classe `TurmaController` para orquestrar as requisições de turmas e delegar a execução para o `TurmaService`. A injeção da dependência do Service é feita via construtor no Controller. 
+
+### Justificativa
+
+Em conformidade com a Arquitetura em Camadas (Seção 9 do contexto), a camada de Coordenação (`org.example.controller`) blinda a UI das regras de negócio do Service. O uso da injeção de dependência via construtor favorece os testes (facilidade para mockar o `TurmaService` futuramente).
+
+### Consequências
+
+- **Positivas:** Encapsulamento correto das responsabilidades; arquitetura preparada para suportar múltiplas interfaces (ex: CLI e depois JavaFX).
+- **Negativas / trade-offs:** Mais classes no fluxo (overengineering para um sistema pequeno, mas necessário por propósitos educacionais da disciplina).
+- **Ações de acompanhamento:** A TUS-2370 prevê refatorar operações para um `AcademicSystemController` central. O `TurmaController` deverá ser mesclado ou coordenado de acordo com as necessidades dessa futura US.
