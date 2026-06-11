@@ -20,9 +20,9 @@ Use esta seção para notas mais longas sobre a tarefa atual:
 
 - **Objetivo:** Permitir que um professor (ADMIN) registre turmas acadêmicas por meio de entrada via teclado.
 - **Critérios de aceite relevantes:** AC1 a AC8 (Foco inicial na validação de permissões de usuário, validação de dados inválidos e delegação arquitetural via Controller/Service).
-- **Arquivos alterados:** `TurmaService.java` (Validação de código e título).
-- **Próximos passos:** 1. Criar a classe `TurmaController` para implementar a delegação arquitetural exigida pelo AC7.
-  2. Integrar a leitura de teclado utilizando `java.util.Scanner` de forma provisória no ponto de entrada.
+- **Arquivos alterados:** `TurmaService.java` (Validação de domínio), `TurmaController.java` (Delegação arquitetural inserida).
+- **Próximos passos:** 1. Integrar a leitura de teclado utilizando `java.util.Scanner` de forma provisória no ponto de entrada (`Main.java`).
+  2. Finalizar a US-2363.
 
 ---
 
