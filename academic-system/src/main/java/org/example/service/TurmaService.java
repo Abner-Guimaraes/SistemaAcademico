@@ -3,6 +3,8 @@ package org.example.service;
 import java.util.ArrayList;
 import java.util.List;
 import org.example.model.Turma;
+import org.example.model.Avaliacao;
+import org.example.model.AvaliacaoFactory;
 import org.example.exception.AcademicSystemException; // Importando a exceção que criamos
 
 public class TurmaService {
@@ -34,6 +36,28 @@ public class TurmaService {
     }
 
     public void registrarAvaliacao(String codigoTurma, String nome, String tipo, double valor, double peso, String usuarioLogado) {
-        // TODO (Passo 3): Implementar processamento no Service e chamada da Factory
+        // 1. Verificação de autorização (AC8)
+        if (!"PROFESSOR".equals(usuarioLogado)) {
+            throw new AcademicSystemException("Operação negada: Apenas professores podem registrar avaliações.");
+        }
+
+        // 2. Busca e validação da turma (AC4)
+        Turma turmaEncontrada = null;
+        for (Turma t : turmasCadastradas) {
+            if (t.getCodigo().equals(codigoTurma)) {
+                turmaEncontrada = t;
+                break;
+            }
+        }
+
+        if (turmaEncontrada == null) {
+            throw new AcademicSystemException("Turma não encontrada: " + codigoTurma);
+        }
+
+        // Chama a Factory para instanciar (o tipo é validado dentro da factory)
+        Avaliacao novaAvaliacao = AvaliacaoFactory.criar(tipo, nome, valor, peso);
+
+        // Adiciona à turma
+        turmaEncontrada.adicionarAvaliacao(novaAvaliacao);
     }
 }
