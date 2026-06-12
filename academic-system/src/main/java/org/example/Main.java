@@ -14,6 +14,9 @@ public class Main {
         System.out.println("-----------------------------------");
 
         java.util.Scanner scanner = new java.util.Scanner(System.in);
+        org.example.service.TurmaService turmaService = new org.example.service.TurmaService();
+        org.example.controller.TurmaController turmaController = new org.example.controller.TurmaController(turmaService);
+        org.example.controller.AvaliacaoController avaliacaoController = new org.example.controller.AvaliacaoController(turmaService);
 
         System.out.println("Usuário logado: PROFESSOR");
         System.out.println("--- US-2361: Registro de Avaliação ---");
@@ -34,14 +37,19 @@ public class Main {
         double pesoAvaliacao = Double.parseDouble(scanner.nextLine());
 
         // FIM DA FASE 1 - Captura concluída. 
-        // Os próximos passos (Fase 2 e 3) envolverão o Controller e o Service para processar essas variáveis.
         System.out.println("\n[DEBUG] Dados capturados: Turma=" + codigoTurma + ", Nome=" + nomeAvaliacao + ", Tipo=" + tipoAvaliacao + ", Valor=" + valorAvaliacao + ", Peso=" + pesoAvaliacao);
+        
+        // INÍCIO DA FASE 2 - Passagem pelo Controller
+        try {
+            avaliacaoController.registrarAvaliacao(codigoTurma, nomeAvaliacao, tipoAvaliacao, valorAvaliacao, pesoAvaliacao, "PROFESSOR");
+            System.out.println("Comando enviado ao Controller com sucesso!");
+        } catch (Exception e) {
+            System.out.println("Erro ao tentar registrar avaliação: " + e.getMessage());
+        }
         
         System.out.println("-----------------------------------");
         System.out.println("--- US-2363: Cadastro de Turmas ---");
-        // Reaproveitando o scanner criado acima
-        org.example.service.TurmaService turmaService = new org.example.service.TurmaService();
-        org.example.controller.TurmaController turmaController = new org.example.controller.TurmaController(turmaService);
+        // Reaproveitando o scanner e o controller criados acima
 
         System.out.println("Simulando usuário logado como: ADMIN");
         String usuarioParaTurma = "ADMIN";

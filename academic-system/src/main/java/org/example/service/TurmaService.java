@@ -32,4 +32,8 @@ public class TurmaService {
     public List<Turma> listarTurmas() {
         return turmasCadastradas;
     }
+
+    public void registrarAvaliacao(String codigoTurma, String nome, String tipo, double valor, double peso, String usuarioLogado) {
+        // TODO (Passo 3): Implementar processamento no Service e chamada da Factory
+    }
 }
