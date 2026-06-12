@@ -1,9 +1,11 @@
 package org.example;
 
 import org.example.model.Avaliacao;
+
 import org.example.model.AvaliacaoFactory;
 import org.example.model.GerenciadorDeTurmas;
 import org.example.model.Turma;
+
 
 public class Main {
     public static void main(String[] args) {

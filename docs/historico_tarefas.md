@@ -12,17 +12,12 @@ Diário de bordo do desenvolvimento do Sistema Acadêmico. Registre aqui o que e
 
 | Data de início | História / Tarefa | Descrição | Responsável | Observações |
 |----------------|-------------------|-----------|-------------|-------------|
-| 12/06/2026 | US-2361 | Integrar AvaliacaoFactory no fluxo principal (Controller/Service) | Desenvolvedor | Refatoração de Factory |
+| - | - | Nenhuma tarefa em andamento no momento | - | - |
 
 ### Detalhamento
 
 Use esta seção para notas mais longas sobre a tarefa atual:
-**Integração do Padrão Factory (US-2361)**
-1. Captura de Dados (Menu/CLI): Capturar código da turma, tipo da avaliação (String), valor e peso na interface.
-2. Passagem pelo Controller: Repassar os dados da UI para a camada de Serviço (`TurmaController` ou similar).
-3. Processamento no Service: Validar existência da turma; chamar `AvaliacaoFactory.criarAvaliacao(tipo)`; preencher atributos e adicionar à turma.
-4. Validação na Factory: Lançar `AcademicSystemException` se o tipo for inválido.
-5. Validação de Domínio: Validar valor e peso.
+*(Nenhuma tarefa em andamento)*
 
 ---
 
@@ -54,6 +49,15 @@ Use esta seção para notas mais longas sobre a tarefa atual:
   - Implementação de um `GerenciadorDeTurmas` para validar a existência da turma e os privilégios do usuário (PROFESSOR) antes do registro.
 - **Como foi validado:** Testes unitários via JUnit (`RegistrodeAvaliacaoTest.java`). Cobertura de 100% dos Critérios de Aceitação (AC1 ao AC8).
 - **Observações / débito técnico:** O código foi refatorado após a aprovação nos testes, isolando as regras de negócio corretamente. Aprendizado prático do ciclo Red-Green-Refactor do TDD.
+
+#### 12/06/2026 — Integração e Refatoração do Padrão Factory (US-2361)
+
+- **História:** US-2361 - Registrar Avaliação
+- **O que foi refatorado:**
+  - Código "órfão" da `AvaliacaoFactory` foi conectado à lógica principal.
+  - Implementado o fluxo MVC e separação de responsabilidades (captura de dados CLI, passagem via `AvaliacaoController`, processamento e amarração final no `TurmaService`).
+  - Atualizadas as validações de domínio da própria `Avaliacao` e da `AvaliacaoFactory` para garantirem que herdam da exceção padrão `AcademicSystemException`.
+- **Como foi validado:** Através do teste de regressão e atualização do `RegistrodeAvaliacaoTest.java`, incluindo correções no CA5 e CA6 para a nova exceção.
 
 ---
 
