@@ -13,29 +13,33 @@ public class Main {
         System.out.println("Bem-vindo ao Sistema Acadêmico!");
         System.out.println("-----------------------------------");
 
+        java.util.Scanner scanner = new java.util.Scanner(System.in);
+
         System.out.println("Usuário logado: PROFESSOR");
-        try {
-            Avaliacao prova = AvaliacaoFactory.criar("Prova", "P1", 10.0, 0.4);
-            gerenciador.registrarAvaliacao("CC3A", prova, "PROFESSOR");
-            System.out.println("Sucesso: Você registrou a avaliação na turma CC3A!");
-        } catch (Exception e) {
-            System.out.println("Erro: " + e.getMessage());
-        }
+        System.out.println("--- US-2361: Registro de Avaliação ---");
+        
+        System.out.print("Digite o código da turma: ");
+        String codigoTurma = scanner.nextLine();
+        
+        System.out.print("Digite o nome da avaliação (ex: P1): ");
+        String nomeAvaliacao = scanner.nextLine();
+        
+        System.out.print("Digite o tipo da avaliação (Prova, Trabalho Prático, Seminário, Atividade): ");
+        String tipoAvaliacao = scanner.nextLine();
+        
+        System.out.print("Digite o valor da avaliação: ");
+        double valorAvaliacao = Double.parseDouble(scanner.nextLine());
+        
+        System.out.print("Digite o peso da avaliação (ex: 0.4): ");
+        double pesoAvaliacao = Double.parseDouble(scanner.nextLine());
 
-        System.out.println("-----------------------------------");
-
-        System.out.println("Usuário logado: Abner");
-        try {
-            Avaliacao trabalho = AvaliacaoFactory.criar("Trabalho Prático", "T1", 10.0, 0.2);
-            gerenciador.registrarAvaliacao("CC3A", trabalho, "ALUNO_HACKER");
-            System.out.println("Sucesso: Avaliação registrada!");
-        } catch (Exception e) {
-            System.out.println("Erro ao tentar registrar: " + e.getMessage());
-        }
+        // FIM DA FASE 1 - Captura concluída. 
+        // Os próximos passos (Fase 2 e 3) envolverão o Controller e o Service para processar essas variáveis.
+        System.out.println("\n[DEBUG] Dados capturados: Turma=" + codigoTurma + ", Nome=" + nomeAvaliacao + ", Tipo=" + tipoAvaliacao + ", Valor=" + valorAvaliacao + ", Peso=" + pesoAvaliacao);
         
         System.out.println("-----------------------------------");
         System.out.println("--- US-2363: Cadastro de Turmas ---");
-        java.util.Scanner scanner = new java.util.Scanner(System.in);
+        // Reaproveitando o scanner criado acima
         org.example.service.TurmaService turmaService = new org.example.service.TurmaService();
         org.example.controller.TurmaController turmaController = new org.example.controller.TurmaController(turmaService);
 
