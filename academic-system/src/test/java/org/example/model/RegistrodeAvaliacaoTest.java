@@ -30,13 +30,13 @@ class RegistrodeAvaliacaoTest {
     }
 
     @Test
-    @DisplayName("CA6 - Deve lançar ExcecaoSistemaAcademico ao tentar cadastrar avaliação com dados inválidos")
+    @DisplayName("CA6 - Deve lançar AcademicSystemException ao tentar cadastrar avaliação com dados inválidos")
     void deveLancarexcecaoQuandoDadosDaAvaliacaoForemInvalidos() {
-        assertThrows(ExcecaoSistemaAcademico.class, () -> {
+        assertThrows(org.example.exception.AcademicSystemException.class, () -> {
             new Prova("Prova Inválida", -5.0, 0.4);
         }, "Deve rejeitar nota máxima negativa");
 
-        assertThrows(ExcecaoSistemaAcademico.class, () -> {
+        assertThrows(org.example.exception.AcademicSystemException.class, () -> {
             new Prova("Prova Inválida", 10.0, -0.1);
         }, "Deve rejeitar peso negativo");
     }

@@ -1,5 +1,5 @@
 package org.example.model;
-import org.example.exception.ExcecaoSistemaAcademico;
+import org.example.exception.AcademicSystemException;
 
 public abstract class Avaliacao {
 	
@@ -11,7 +11,7 @@ public abstract class Avaliacao {
 	
 	public Avaliacao(String nome, double valor, double peso) {
 		if(valor < 0 || peso < 0) {
-			throw new ExcecaoSistemaAcademico("Inválido");
+			throw new AcademicSystemException("Dados inválidos: valor ou peso não podem ser negativos.");
 		}
 		this.nome = nome;
 		this.valor = valor;
@@ -24,7 +24,7 @@ public abstract class Avaliacao {
 	
 	
 	
-	public String getNome() {return nome;}
-    public double getValor() { return 10.0; }
-    public double getPeso() { return 0.4; }
+	public String getNome() { return nome; }
+    public double getValor() { return this.valor; }
+    public double getPeso() { return this.peso; }
 }

@@ -12,12 +12,17 @@ Diário de bordo do desenvolvimento do Sistema Acadêmico. Registre aqui o que e
 
 | Data de início | História / Tarefa | Descrição | Responsável | Observações |
 |----------------|-------------------|-----------|-------------|-------------|
-| -     | -           | Nenhuma tarefa em andamento no momento | - | - |
+| 12/06/2026 | US-2361 | Integrar AvaliacaoFactory no fluxo principal (Controller/Service) | Desenvolvedor | Refatoração de Factory |
 
 ### Detalhamento
 
 Use esta seção para notas mais longas sobre a tarefa atual:
-(Nenhuma tarefa em andamento)
+**Integração do Padrão Factory (US-2361)**
+1. Captura de Dados (Menu/CLI): Capturar código da turma, tipo da avaliação (String), valor e peso na interface.
+2. Passagem pelo Controller: Repassar os dados da UI para a camada de Serviço (`TurmaController` ou similar).
+3. Processamento no Service: Validar existência da turma; chamar `AvaliacaoFactory.criarAvaliacao(tipo)`; preencher atributos e adicionar à turma.
+4. Validação na Factory: Lançar `AcademicSystemException` se o tipo for inválido.
+5. Validação de Domínio: Validar valor e peso.
 
 ---
 
