@@ -3,8 +3,8 @@
 
 # Alma do Projeto (Guia e Diretrizes de Desenvolvimento)
 
-Este documento centraliza as diretrizes de trabalho, a forma de atuação, as preferências e as regras definidas pelo programador desde o início do projeto. A inteligência artificial (IA) e qualquer pessoa colaborando neste repositório devem consultar e obedecer rigorosamente a estas regras a cada nova sessão.
-esse documento serve como contexto para iniciação de um agente.
+Este documento centraliza as diretrizes de trabalho, a forma de atuação, as preferências e as regras definidas pelo programador desde o início do projeto. A inteligência artificial (IA) e qualquer pessoa colaborando neste repositório devem consultar e obedecer rigorosamente a estas regras a cada nova sessão. Esse documento serve como contexto para a iniciação de um agente.
+
 
 ---
 
@@ -38,41 +38,31 @@ Sempre que uma nova sessão for iniciada, a IA deve obrigatoriamente seguir esta
 
 O ciclo de vida do software e a execução da **Fase 3** seguem rigorosamente o fluxo abaixo. As etapas marcadas com *(humano)* são pré-requisitos trazidos pelo desenvolvedor. O trabalho conjunto de Pair Programming se concentra nos passos **7 ao 14**.
 
-```mermaid
-graph TD
-    %% Fase Preparatória
-    subgraph Preparacao[Fase Preparatória - Essencialmente Humano]
-        A[1. Requisitos] --> B[1.1 Modelo de Domínio]
-        B --> C[2. Casos de Uso]
-        C --> D[3. UML]
-        D --> E[4. Arquitetura]
-        E --> F[5. Documento de Contexto]
-        F --> G[6. Critérios de Aceitação]
-    end
-
-    %% Loop de Desenvolvimento (Fase 3 da IA)
-    subgraph LoopDesenvolvimento[Loop de Desenvolvimento - Fase 3: Humano + IA]
-        H[7. Selecionar Tarefa/História] --> I[8. BDD: Definir cenários]
-        I --> J[9. TDD: Criar testes unitários]
-        J --> K[10. Implementação: Fazer teste passar]
-        K --> L[11. Execução dos Testes: Automático]
-        L --> M[12. Refatoração: SOLID, Patterns]
-        M --> N[13. Code Review]
-        N --> O[14. Commit do Passo]
-        O -.->|Próximo Passo do Plano| H
-    end
-
-    %% Fim do Loop
-    subgraph PosLoop[Entrega e Integração]
-        P[15. Integração] --> Q[16. Testes de Integração]
-        Q --> R[17. Testes de Aceitação]
-        R --> S[18. Entrega]
-    end
-
-    Preparacao --> LoopDesenvolvimento
-    LoopDesenvolvimento --> PosLoop
-
-```
+[Processo de Desenvolvimento]
+├── 01. Fase Preparatória (Humano)
+│   ├── 1. Requisitos
+│   │   └── 1.1 Modelo de Domínio
+│   ├── 2. Casos de Uso(Opcional)
+│   ├── 3. UML
+│   ├── 4. Arquitetura
+│   ├── 5. Documento de Contextos
+│   └── 6. Refinamento de Critérios de Aceitação
+│
+├── 02. Loop de Desenvolvimento (Humano + IA)
+│   ├── 7. Selecionar Tarefa/História
+│   ├── 8. BDD: Definir cenários
+│   ├── 9. TDD: Criar testes unitários
+│   ├── 10. Implementação: Fazer teste passar
+│   ├── 11. Execução dos Testes: Automático
+│   ├── 12. Refatoração: SOLID, Patterns
+│   ├── 13. Code Review
+│   └── 14. Commit do Passo -> (Loop volta ao item 7)
+│
+└── 03. Entrega e Integração
+    ├── 15. Integração
+    ├── 16. Testes de Integração
+    ├── 17. Testes de Aceitação
+    └── 18. Entrega
 
 > **Status Atual do Projeto:** Estamos operando ativamente dentro do **Loop de Desenvolvimento**, focados estritamente nos passos de **Refatoração (12)** e **Code Review (13)** das tarefas planejadas.
 
@@ -86,6 +76,7 @@ graph TD
 * **Passo a Passo:** Nunca avançar para a próxima fase do fluxo ou para o próximo passo do plano sem a aprovação explícita do usuário.
 * **Registro de Débitos:** A IA deve lembrar o programador de registrar débitos técnicos (em `debitos_tecnicos.md`) sempre que uma funcionalidade ou refatoração for adiada ou postergada para estudo, exigindo a justificativa correspondente.
 * **Respeito à Arquitetura:** Todas as novas implementações devem respeitar as decisões de arquitetura (`arquitetura.md`) previamente documentadas.
+* **Concisão Extrema (Economia de Contexto):** Nas Fases 1 e 2, responda de forma estritamente direta e resumida. Na Fase 3, nunca reescreva arquivos de código inteiros se apenas algumas linhas mudaram; envie apenas o diff ou o bloco alterado. Evite explicações teóricas longas sobre SOLID ou Patterns a menos que expressamente solicitado.
 
 ---
 
