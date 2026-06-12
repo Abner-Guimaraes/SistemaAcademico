@@ -56,9 +56,9 @@ class RegistrodeAvaliacaoTest {
     }
 
     @Test
-    @DisplayName("CA5 - Deve lançar ExcecaoSistemaAcademico quando o tipo de avaliação selecionado for inválido")
+    @DisplayName("CA5 - Deve lançar AcademicSystemException quando o tipo de avaliação selecionado for inválido")
     void deveLancarExcecaoParaTipoAvaliacaoInvalido() {
-        assertThrows(ExcecaoSistemaAcademico.class, () -> {
+        assertThrows(org.example.exception.AcademicSystemException.class, () -> {
             AvaliacaoFactory.criar("Redacao", "Enem", 10.0, 0.5);
         }, "Deve rejeitar tipos que não sejam os quatro oficiais");
     }
