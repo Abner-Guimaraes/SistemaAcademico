@@ -32,8 +32,22 @@ Use esta seção para notas mais longas sobre a tarefa atual:
 | 18/06/2026        | US-2369              | Handle authentication and authorization errors with custom exceptions | 740a413 |
 | 18/06/2026        | US-0000              | Startup Academic System | 682bb74 |
 | 18/06/2026        | TUS-2370             | Refactor menu operations into AcademicSystemController | e5d5b21 |
+| 18/06/2026        | TUS-2371             | Validate academic domain objects using Jakarta Bean Validation | 2329f9c |
 
 ### Registro detalhado
+
+#### 18/06/2026 — Validate academic domain objects using Jakarta Bean Validation (TUS-2371)
+
+- **História:** TUS-2371 - Validate academic domain objects using Jakarta Bean Validation
+- **O que foi implementado:**
+  - Adição das dependências do Jakarta Bean Validation e Hibernate Validator no `pom.xml`.
+  - Anotação das classes de domínio (`Turma` e `Avaliacao`) com regras de validação (`@NotBlank`, `@PositiveOrZero`).
+  - Criação do `DomainValidator` para encapsular e rodar o `Validator` oficial da API, traduzindo violações de Constraint para nossa exceção de negócio `AcademicSystemException`.
+  - Remoção dos *if-statements* manuais de validação espalhados pelas lógicas (como no `TurmaService` e `Avaliacao`).
+- **Como foi validado:** Suíte de testes (`mvn clean test`) rodando perfeitamente e validando as exceções através do novo componente de Validação.
+- **Observações / débito técnico:** Nenhum. A base agora escala facilmente para dezenas de novos atributos validáveis.
+
+
 
 #### 18/06/2026 — Refactor menu operations into AcademicSystemController (TUS-2370)
 
