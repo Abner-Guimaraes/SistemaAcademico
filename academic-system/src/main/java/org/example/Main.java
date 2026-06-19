@@ -16,9 +16,9 @@ public class Main {
         System.out.println("-----------------------------------");
 
         java.util.Scanner scanner = new java.util.Scanner(System.in);
-        org.example.service.TurmaService turmaService = new org.example.service.TurmaService();
-        org.example.controller.TurmaController turmaController = new org.example.controller.TurmaController(turmaService);
-        org.example.controller.AvaliacaoController avaliacaoController = new org.example.controller.AvaliacaoController(turmaService);
+        AcademicSystem system = AcademicSystem.getInstance();
+        org.example.controller.TurmaController turmaController = system.getTurmaController();
+        org.example.controller.AvaliacaoController avaliacaoController = system.getAvaliacaoController();
 
         System.out.println("Usuário logado: PROFESSOR");
         System.out.println("--- US-2361: Registro de Avaliação ---");
