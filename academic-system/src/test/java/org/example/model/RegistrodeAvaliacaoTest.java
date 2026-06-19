@@ -1,6 +1,7 @@
 package org.example.model;
 
 import org.example.exception.AcademicSystemException;
+import org.example.exception.AuthorizationException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -82,7 +83,7 @@ class RegistrodeAvaliacaoTest {
         
         Avaliacao prova = AvaliacaoFactory.criar("Prova", "P1", 10.0, 0.4);
 
-        assertThrows(AcademicSystemException.class, () -> {
+        assertThrows(AuthorizationException.class, () -> {
             gerenciador.registrarAvaliacao("CC3A", prova, "ALUNO");
         }, "Usuários sem privilégio não podem registrar avaliações");
     }

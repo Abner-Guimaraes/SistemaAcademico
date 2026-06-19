@@ -6,6 +6,7 @@ import org.example.model.Turma;
 import org.example.model.Avaliacao;
 import org.example.model.AvaliacaoFactory;
 import org.example.exception.AcademicSystemException; // Importando a exceção que criamos
+import org.example.exception.AuthorizationException;
 
 public class TurmaService {
     
@@ -16,7 +17,7 @@ public class TurmaService {
         // 1. CLÁUSULA DE GUARDA: Barramos o erro logo no início!
         // Em Java, SEMPRE compare Strings usando .equals(), nunca usando ==
         if (!"ADMIN".equals(usuarioAdmin)) {
-            throw new AcademicSystemException("Operação negada: Apenas administradores podem registrar turmas.");
+            throw new AuthorizationException("Operação negada: Apenas administradores podem registrar turmas.");
         }
         
         // 2. VALIDAÇÃO DE DOMÍNIO: AC3 e AC4
@@ -38,7 +39,7 @@ public class TurmaService {
     public void registrarAvaliacao(String codigoTurma, String nome, String tipo, double valor, double peso, String usuarioLogado) {
         // 1. Verificação de autorização (AC8)
         if (!"PROFESSOR".equals(usuarioLogado)) {
-            throw new AcademicSystemException("Operação negada: Apenas professores podem registrar avaliações.");
+            throw new AuthorizationException("Operação negada: Apenas professores podem registrar avaliações.");
         }
 
         // 2. Busca e validação da turma (AC4)

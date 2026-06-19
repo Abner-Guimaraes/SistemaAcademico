@@ -58,6 +58,8 @@ public class Main {
                 System.out.println("Comando enviado ao Controller com sucesso!");
             } catch (org.example.exception.AcademicSystemException e) {
                 System.out.println("Erro de Domínio ao registrar avaliação: " + e.getMessage());
+            } catch (org.example.exception.SecuritySystemException e) {
+                System.out.println("Erro de Segurança: " + e.getMessage());
             } catch (Exception e) {
                 System.out.println("Erro inesperado ao tentar registrar avaliação: " + e.getMessage());
             }
@@ -87,6 +89,8 @@ public class Main {
             }
         } catch (org.example.exception.AcademicSystemException e) {
             System.out.println("Erro de Negócio ao registrar turma: " + e.getMessage());
+        } catch (org.example.exception.SecuritySystemException e) {
+            System.out.println("Erro de Segurança: " + e.getMessage());
         }
         
         scanner.close();

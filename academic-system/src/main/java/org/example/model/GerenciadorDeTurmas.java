@@ -1,6 +1,7 @@
 package org.example.model;
 
 import org.example.exception.AcademicSystemException;
+import org.example.exception.AuthorizationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class GerenciadorDeTurmas {
         
         // AC8: Verifica a autorização imediatamente
         if (!"PROFESSOR".equals(usuarioLogado)) {
-            throw new AcademicSystemException("Operação negada: Apenas professores podem registrar avaliações.");
+            throw new AuthorizationException("Operação negada: Apenas professores podem registrar avaliações.");
         }
 
         // Se for professor, procura a turma pelo código (AC4)

@@ -2,6 +2,7 @@ package org.example.model;
 
 import org.example.service.TurmaService;
 import org.example.exception.AcademicSystemException;
+import org.example.exception.AuthorizationException;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,10 +44,10 @@ public class RegistrodeTurmasTest {
         String titulo = "Estrutura de Dados";
         String usuarioInvalido = "PROFESSOR"; 
 
-        // 2. QUANDO / ENTÃO: Esperamos que o método quebre com uma AcademicSystemException
-        assertThrows(AcademicSystemException.class, () -> {
+        // 2. QUANDO / ENTÃO: Esperamos que o método quebre com uma AuthorizationException
+        assertThrows(AuthorizationException.class, () -> {
             service.registrarTurma(codigo, titulo, usuarioInvalido);
-        }, "Deveria ter negado a operação lançando AcademicSystemException");
+        }, "Deveria ter negado a operação lançando AuthorizationException");
     }
     
     @Test
