@@ -27,8 +27,20 @@ Use esta seção para notas mais longas sobre a tarefa atual:
 |-------------------|----------------------|----------------------------|------------------------|
 | 10/06/2026        | US-2361              | Registrar Avaliação na Turma | *Aguardando push* |
 | 11/06/2026        | US-2363              | Registrar Turmas por Entrada de Teclado | *Aguardando push* |
+| 18/06/2026        | US-2367              | Handle academic domain errors with custom exceptions | 9fa8148 |
 
 ### Registro detalhado
+
+#### 18/06/2026 — Handle academic domain errors with custom exceptions (US-2367)
+
+- **História:** US-2367 - Handle academic domain errors with custom exceptions
+- **O que foi implementado:**
+  - Remoção da classe duplicada `ExcecaoSistemaAcademico`.
+  - Padronização do uso da exceção base de domínio `AcademicSystemException`.
+  - Tratamento da exceção na classe `Main` para emitir mensagens amigáveis de erro de negócio sem estourar o stacktrace.
+- **Como foi validado:** Execução e aprovação da suíte de testes (`mvn clean test`).
+- **Observações / débito técnico:** Nenhum débito deixado.
+
 
 #### 11/06/2026 — Registrar Turmas por Entrada de Teclado (US-2363)
 
