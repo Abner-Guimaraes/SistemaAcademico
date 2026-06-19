@@ -28,8 +28,21 @@ Use esta seção para notas mais longas sobre a tarefa atual:
 | 10/06/2026        | US-2361              | Registrar Avaliação na Turma | *Aguardando push* |
 | 11/06/2026        | US-2363              | Registrar Turmas por Entrada de Teclado | *Aguardando push* |
 | 18/06/2026        | US-2367              | Handle academic domain errors with custom exceptions | 9fa8148 |
+| 18/06/2026        | US-2368              | Handle keyboard input errors with custom exceptions | 7d93f84 |
 
 ### Registro detalhado
+
+#### 18/06/2026 — Handle keyboard input errors with custom exceptions (US-2368)
+
+- **História:** US-2368 - Handle keyboard input errors with custom exceptions
+- **O que foi implementado:**
+  - Criação da classe específica `KeyboardInputException`.
+  - Envolvimento da leitura de valores numéricos (valor e peso da avaliação) em blocos `try-catch` na `Main`.
+  - Tratamento da exceção formatando amigavelmente a mensagem de erro para o usuário sem estourar o stacktrace.
+- **Como foi validado:** Execução e aprovação da suíte de testes unitários.
+- **Observações / débito técnico:** Nenhum.
+
+
 
 #### 18/06/2026 — Handle academic domain errors with custom exceptions (US-2367)
 
