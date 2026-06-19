@@ -31,8 +31,21 @@ Use esta seção para notas mais longas sobre a tarefa atual:
 | 18/06/2026        | US-2368              | Handle keyboard input errors with custom exceptions | 7d93f84 |
 | 18/06/2026        | US-2369              | Handle authentication and authorization errors with custom exceptions | 740a413 |
 | 18/06/2026        | US-0000              | Startup Academic System | 682bb74 |
+| 18/06/2026        | TUS-2370             | Refactor menu operations into AcademicSystemController | e5d5b21 |
 
 ### Registro detalhado
+
+#### 18/06/2026 — Refactor menu operations into AcademicSystemController (TUS-2370)
+
+- **História:** TUS-2370 - Refactor menu operations into AcademicSystemController
+- **O que foi implementado:**
+  - Criação da classe `AcademicSystemController` servindo como Facade.
+  - O `AcademicSystem` foi atualizado para inicializar e prover este novo controller.
+  - A classe `Main` foi enxugada: agora ela não fala mais diretamente com `TurmaController` ou `AvaliacaoController`, mas repassa todos os comandos de negócio para o `AcademicSystemController`.
+- **Como foi validado:** Build e suíte de testes aprovados (`mvn clean test`).
+- **Observações / débito técnico:** Nenhum. A Main está purificada para atuar apenas como I/O.
+
+
 
 #### 18/06/2026 — Startup Academic System (US-0000)
 
