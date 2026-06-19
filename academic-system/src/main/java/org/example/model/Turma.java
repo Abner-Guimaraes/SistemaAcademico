@@ -2,9 +2,14 @@ package org.example.model;
 import java.util.List;
 import java.util.ArrayList;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class Turma {
 	
+	@NotBlank(message = "O código da turma não pode ser vazio.")
 	private String codigo;
+	
+	@NotBlank(message = "O título da turma não pode ser vazio.")
 	private String titulo;
 	private ArrayList<Avaliacao> avaliacoes;
 

@@ -7,6 +7,7 @@ import org.example.model.Avaliacao;
 import org.example.model.AvaliacaoFactory;
 import org.example.exception.AcademicSystemException; // Importando a exceção que criamos
 import org.example.exception.AuthorizationException;
+import org.example.validation.DomainValidator;
 
 public class TurmaService {
     
@@ -20,15 +21,9 @@ public class TurmaService {
             throw new AuthorizationException("Operação negada: Apenas administradores podem registrar turmas.");
         }
         
-        // 2. VALIDAÇÃO DE DOMÍNIO: AC3 e AC4
-        if (codigo == null || codigo.trim().isEmpty()) {
-            throw new AcademicSystemException("Dados inválidos: O código da turma não pode ser vazio.");
-        }
-        if (titulo == null || titulo.trim().isEmpty()) {
-            throw new AcademicSystemException("Dados inválidos: O título da turma não pode ser vazio.");
-        }
-        
+        // 2. VALIDAÇÃO DE DOMÍNIO via Jakarta Validation
         Turma novaTurma = new Turma(codigo, titulo);
+        DomainValidator.validate(novaTurma);
         turmasCadastradas.add(novaTurma);
     }
     
@@ -55,8 +50,9 @@ public class TurmaService {
             throw new AcademicSystemException("Turma não encontrada: " + codigoTurma);
         }
 
-        // Chama a Factory para instanciar (o tipo é validado dentro da factory)
+        // Chama a Factory para instanciar e depois valida
         Avaliacao novaAvaliacao = AvaliacaoFactory.criar(tipo, nome, valor, peso);
+        DomainValidator.validate(novaAvaliacao);
 
         // Adiciona à turma
         turmaEncontrada.adicionarAvaliacao(novaAvaliacao);
