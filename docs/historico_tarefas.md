@@ -29,8 +29,21 @@ Use esta seção para notas mais longas sobre a tarefa atual:
 | 11/06/2026        | US-2363              | Registrar Turmas por Entrada de Teclado | *Aguardando push* |
 | 18/06/2026        | US-2367              | Handle academic domain errors with custom exceptions | 9fa8148 |
 | 18/06/2026        | US-2368              | Handle keyboard input errors with custom exceptions | 7d93f84 |
+| 18/06/2026        | US-2369              | Handle authentication and authorization errors with custom exceptions | 740a413 |
 
 ### Registro detalhado
+
+#### 18/06/2026 — Handle authentication and authorization errors with custom exceptions (US-2369)
+
+- **História:** US-2369 - Handle authentication and authorization errors with custom exceptions
+- **O que foi implementado:**
+  - Criação da hierarquia de exceções de segurança (`SecuritySystemException`, `AuthenticationException`, `AuthorizationException`).
+  - Substituição das exceções lançadas nos serviços (`TurmaService` e `GerenciadorDeTurmas`) em verificações de perfil (`ADMIN`/`PROFESSOR`) de `AcademicSystemException` para `AuthorizationException`.
+  - Captura das exceções de segurança na `Main` sem comprometer o fluxo, garantindo os Critérios de Aceitação AC1-AC8.
+- **Como foi validado:** Suíte de testes atualizada para esperar as novas exceções. Execução via `mvn clean test` obteve 100% de sucesso.
+- **Observações / débito técnico:** Pronta para receber mecanismos reais de Login futuramente.
+
+
 
 #### 18/06/2026 — Handle keyboard input errors with custom exceptions (US-2368)
 
