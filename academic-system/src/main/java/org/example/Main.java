@@ -45,8 +45,10 @@ public class Main {
         try {
             avaliacaoController.registrarAvaliacao(codigoTurma, nomeAvaliacao, tipoAvaliacao, valorAvaliacao, pesoAvaliacao, "PROFESSOR");
             System.out.println("Comando enviado ao Controller com sucesso!");
+        } catch (org.example.exception.AcademicSystemException e) {
+            System.out.println("Erro de Domínio ao registrar avaliação: " + e.getMessage());
         } catch (Exception e) {
-            System.out.println("Erro ao tentar registrar avaliação: " + e.getMessage());
+            System.out.println("Erro inesperado ao tentar registrar avaliação: " + e.getMessage());
         }
         
         System.out.println("-----------------------------------");

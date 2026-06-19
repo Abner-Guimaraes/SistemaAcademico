@@ -66,6 +66,9 @@ O ciclo de vida do software e a execução da **Fase 3** seguem rigorosamente o 
 
 > **Status Atual do Projeto:** Estamos operando ativamente dentro do **Loop de Desenvolvimento**, focados estritamente nos passos de **Refatoração (12)** e **Code Review (13)** das tarefas planejadas.
 
+* **Testes:** Toda funcionalidade considerando os critérios de aceitação devem ser testadas utilizando o método TDD.
+* **Zero Adivinhação:** Nunca inferir requisitos ou assumir comportamentos não documentados. Prefira sempre evidências encontradas no código e principalmente nos documentos.
+
 ---
 
 ## 3. Princípios Gerais e Regras Inegociáveis

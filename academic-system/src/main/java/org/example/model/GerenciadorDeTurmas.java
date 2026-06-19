@@ -1,6 +1,6 @@
 package org.example.model;
 
-import org.example.exception.ExcecaoSistemaAcademico;
+import org.example.exception.AcademicSystemException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class GerenciadorDeTurmas {
         
         // AC8: Verifica a autorização imediatamente
         if (!"PROFESSOR".equals(usuarioLogado)) {
-            throw new ExcecaoSistemaAcademico("Operação negada: Apenas professores podem registrar avaliações.");
+            throw new AcademicSystemException("Operação negada: Apenas professores podem registrar avaliações.");
         }
 
         // Se for professor, procura a turma pelo código (AC4)
@@ -31,6 +31,6 @@ public class GerenciadorDeTurmas {
         }
         
         // Se rodou a lista toda e não encontrou, lança o erro de turma inexistente
-        throw new ExcecaoSistemaAcademico("Turma inexistente: " + codigoTurma);
+        throw new AcademicSystemException("Turma inexistente: " + codigoTurma);
     }
 }

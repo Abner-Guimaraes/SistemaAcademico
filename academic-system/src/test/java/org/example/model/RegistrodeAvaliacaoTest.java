@@ -1,6 +1,6 @@
 package org.example.model;
 
-import org.example.exception.ExcecaoSistemaAcademico;
+import org.example.exception.AcademicSystemException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -69,7 +69,7 @@ class RegistrodeAvaliacaoTest {
         GerenciadorDeTurmas gerenciador = new GerenciadorDeTurmas();
         Avaliacao prova = AvaliacaoFactory.criar("Prova", "P1", 10.0, 0.4);
 
-        assertThrows(ExcecaoSistemaAcademico.class, () -> {
+        assertThrows(AcademicSystemException.class, () -> {
             gerenciador.registrarAvaliacao("CODIGO_INEXISTENTE", prova, "PROFESSOR");
         }, "Deve rejeitar registro em turma inexistente");
     }
@@ -82,7 +82,7 @@ class RegistrodeAvaliacaoTest {
         
         Avaliacao prova = AvaliacaoFactory.criar("Prova", "P1", 10.0, 0.4);
 
-        assertThrows(ExcecaoSistemaAcademico.class, () -> {
+        assertThrows(AcademicSystemException.class, () -> {
             gerenciador.registrarAvaliacao("CC3A", prova, "ALUNO");
         }, "Usuários sem privilégio não podem registrar avaliações");
     }
