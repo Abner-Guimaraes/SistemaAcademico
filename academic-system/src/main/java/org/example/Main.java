@@ -32,23 +32,37 @@ public class Main {
         System.out.print("Digite o tipo da avaliação (Prova, Trabalho Prático, Seminário, Atividade): ");
         String tipoAvaliacao = scanner.nextLine();
         
-        System.out.print("Digite o valor da avaliação: ");
-        double valorAvaliacao = Double.parseDouble(scanner.nextLine());
-        
-        System.out.print("Digite o peso da avaliação (ex: 0.4): ");
-        double pesoAvaliacao = Double.parseDouble(scanner.nextLine());
-
-        // FIM DA FASE 1 - Captura concluída. 
-        System.out.println("\n[DEBUG] Dados capturados: Turma=" + codigoTurma + ", Nome=" + nomeAvaliacao + ", Tipo=" + tipoAvaliacao + ", Valor=" + valorAvaliacao + ", Peso=" + pesoAvaliacao);
-        
-        // INÍCIO DA FASE 2 - Passagem pelo Controller
+        double valorAvaliacao = 0.0;
+        double pesoAvaliacao = 0.0;
         try {
-            avaliacaoController.registrarAvaliacao(codigoTurma, nomeAvaliacao, tipoAvaliacao, valorAvaliacao, pesoAvaliacao, "PROFESSOR");
-            System.out.println("Comando enviado ao Controller com sucesso!");
-        } catch (org.example.exception.AcademicSystemException e) {
-            System.out.println("Erro de Domínio ao registrar avaliação: " + e.getMessage());
-        } catch (Exception e) {
-            System.out.println("Erro inesperado ao tentar registrar avaliação: " + e.getMessage());
+            System.out.print("Digite o valor da avaliação: ");
+            try {
+                valorAvaliacao = Double.parseDouble(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                throw new org.example.exception.KeyboardInputException("Valor numérico inválido informado para avaliação.");
+            }
+            
+            System.out.print("Digite o peso da avaliação (ex: 0.4): ");
+            try {
+                pesoAvaliacao = Double.parseDouble(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                throw new org.example.exception.KeyboardInputException("Valor numérico inválido informado para peso.");
+            }
+
+            // FIM DA FASE 1 - Captura concluída. 
+            System.out.println("\n[DEBUG] Dados capturados: Turma=" + codigoTurma + ", Nome=" + nomeAvaliacao + ", Tipo=" + tipoAvaliacao + ", Valor=" + valorAvaliacao + ", Peso=" + pesoAvaliacao);
+            
+            // INÍCIO DA FASE 2 - Passagem pelo Controller
+            try {
+                avaliacaoController.registrarAvaliacao(codigoTurma, nomeAvaliacao, tipoAvaliacao, valorAvaliacao, pesoAvaliacao, "PROFESSOR");
+                System.out.println("Comando enviado ao Controller com sucesso!");
+            } catch (org.example.exception.AcademicSystemException e) {
+                System.out.println("Erro de Domínio ao registrar avaliação: " + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Erro inesperado ao tentar registrar avaliação: " + e.getMessage());
+            }
+        } catch (org.example.exception.KeyboardInputException e) {
+            System.out.println("Erro de Entrada de Usuário: " + e.getMessage());
         }
         
         System.out.println("-----------------------------------");
