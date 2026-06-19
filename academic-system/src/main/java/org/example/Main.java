@@ -17,8 +17,7 @@ public class Main {
 
         java.util.Scanner scanner = new java.util.Scanner(System.in);
         AcademicSystem system = AcademicSystem.getInstance();
-        org.example.controller.TurmaController turmaController = system.getTurmaController();
-        org.example.controller.AvaliacaoController avaliacaoController = system.getAvaliacaoController();
+        org.example.controller.AcademicSystemController controller = system.getAcademicSystemController();
 
         System.out.println("Usuário logado: PROFESSOR");
         System.out.println("--- US-2361: Registro de Avaliação ---");
@@ -54,7 +53,7 @@ public class Main {
             
             // INÍCIO DA FASE 2 - Passagem pelo Controller
             try {
-                avaliacaoController.registrarAvaliacao(codigoTurma, nomeAvaliacao, tipoAvaliacao, valorAvaliacao, pesoAvaliacao, "PROFESSOR");
+                controller.registrarAvaliacao(codigoTurma, nomeAvaliacao, tipoAvaliacao, valorAvaliacao, pesoAvaliacao, "PROFESSOR");
                 System.out.println("Comando enviado ao Controller com sucesso!");
             } catch (org.example.exception.AcademicSystemException e) {
                 System.out.println("Erro de Domínio ao registrar avaliação: " + e.getMessage());
@@ -81,10 +80,10 @@ public class Main {
         String titulo = scanner.nextLine();
 
         try {
-            turmaController.registrarTurma(codigo, titulo, usuarioParaTurma);
+            controller.registrarTurma(codigo, titulo, usuarioParaTurma);
             System.out.println("Sucesso: Turma '" + titulo + "' registrada!");
             System.out.println("Turmas cadastradas atualmente na memória do Service:");
-            for (Turma t : turmaController.listarTurmas()) {
+            for (Turma t : controller.listarTurmas()) {
                 System.out.println("- " + t.getCodigo() + " : " + t.getTitulo());
             }
         } catch (org.example.exception.AcademicSystemException e) {
