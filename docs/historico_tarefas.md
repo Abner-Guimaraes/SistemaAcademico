@@ -30,8 +30,21 @@ Use esta seção para notas mais longas sobre a tarefa atual:
 | 18/06/2026        | US-2367              | Handle academic domain errors with custom exceptions | 9fa8148 |
 | 18/06/2026        | US-2368              | Handle keyboard input errors with custom exceptions | 7d93f84 |
 | 18/06/2026        | US-2369              | Handle authentication and authorization errors with custom exceptions | 740a413 |
+| 18/06/2026        | US-0000              | Startup Academic System | 682bb74 |
 
 ### Registro detalhado
+
+#### 18/06/2026 — Startup Academic System (US-0000)
+
+- **História:** US-0000 - Startup Academic System
+- **O que foi implementado:**
+  - Criação da classe `AcademicSystem` aplicando o padrão Singleton.
+  - Transferência da responsabilidade de inicializar serviços e controllers (como `TurmaService`, `TurmaController`, `AvaliacaoController`) para dentro do Singleton.
+  - Refatoração da `Main` para iniciar os componentes requisitando `AcademicSystem.getInstance()`.
+- **Como foi validado:** Execução e aprovação de todos os testes unitários via `mvn clean test`.
+- **Observações / débito técnico:** Nenhum. A base para o futuro menu dinâmico está consolidada.
+
+
 
 #### 18/06/2026 — Handle authentication and authorization errors with custom exceptions (US-2369)
 
