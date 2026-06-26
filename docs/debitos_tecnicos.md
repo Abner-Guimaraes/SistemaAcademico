@@ -16,4 +16,5 @@ Em alguns momentos, por decisão do programador, vamos deixar alguns débitos. I
 | Data | Débito Técnico / Recurso Adiável | Categoria (Estudo / Depois) | Justificativa / Motivo | Status |
 |------|----------------------------------|-----------------------------|------------------------|--------|
 | 11/06/2026 | Auditoria / Logging (US-2363 AC8) | Depois | Ferramentas de log previstas na arquitetura (TUS-2390) ainda não foram configuradas. | Pendente |
-| 11/06/2026 | Uso de Scanner diretamente no Main | Depois | Abordagem provisória para entrada de dados. O fluxo será evoluído com a criação do menu de linha de comando na US-2364. | Pendente |
+| 11/06/2026 | Uso de Scanner diretamente no Main | Depois | Abordagem provisória para entrada de dados. O fluxo será evoluído com a criação do menu de linha de comando na US-2364. | Resolvido (US-2364) |
+| 26/06/2026 | Autenticação Real e Perfis | Depois | O sistema usa strings para login simulado. Será resolvido na US-2366. | Pendente |

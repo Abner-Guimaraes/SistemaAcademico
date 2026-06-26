@@ -285,8 +285,17 @@ Esta seção apresenta as User Stories (US) que já foram implementadas, testada
 | História | Status | Observação |
 |----------|--------|------------|
 | **US-2361** | Finalizada | Registrar Avaliação na Turma (Modelo de domínio e testes concluídos) |
+| **TUS-2362** | Finalizada | Persist class assessments to TXT file (RepositorioTurma e RepositorioTurmaTxt implementados) |
 | **US-2363** | Finalizada | Registrar Turmas por Entrada de Teclado (Validação de domínio, Controller e Scanner implementados e testados) |
-| Demais (02–59) | Pendente | Seguir sequência do enunciado |
+| **US-2364** | Finalizada | Manage academic system through command line menu (Menu interativo em loop implementado na Main) |
+| **TUS-2365** | Finalizada | Refactor domain model using Lombok (Substituição de código boilerplate) |
+| **US-2367** | Finalizada | Handle academic domain errors with custom exceptions |
+| **US-2368** | Finalizada | Handle keyboard input errors with custom exceptions |
+| **US-2369** | Finalizada | Handle authentication and authorization errors with custom exceptions |
+| **US-0000** | Finalizada | Startup Academic System |
+| **TUS-2370** | Finalizada | Refactor menu operations into AcademicSystemController |
+| **TUS-2371** | Finalizada | Validate academic domain objects using Jakarta Bean Validation |
+| Demais | Pendente | Seguir sequência do enunciado |
 
 ### Melhorias locais mantidas (sem conflito com o padrão do professor)
 

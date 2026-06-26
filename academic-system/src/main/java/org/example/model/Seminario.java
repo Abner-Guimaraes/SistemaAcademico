@@ -6,8 +6,6 @@ public class Seminario extends Avaliacao {
 		super(nome,valor, peso);
 	}
 	
-	public double getPeso() {return 0.1;}
-	
 	
 	
 

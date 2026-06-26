@@ -12,8 +12,15 @@ Este documento registra decisões de arquitetura, design de código, padrões ad
 | # | Título | Data | Status |
 |---|--------|------|--------|
 | ADR-001 | Uso do Padrão Factory para Criação de Avaliações | 10/06/2026 | Aceita |
-| ADR-002 | Validação de Domínio via Cláusulas de Guarda no Service (Provisória) | 11/06/2026 | Aceita |
-| ADR-003 | Delegação de Operações via Controller | 11/06/2026 | Aceita |
+| ADR-002 | Validação de Domínio via Cláusulas de Guarda no Service (Provisória) | 11/06/2026 | Substituída (ADR-004) |
+| ADR-003 | Delegação de Operações via Controller | 11/06/2026 | Evoluída (ADR-005) |
+| ADR-004 | Validação com Jakarta Bean Validation | 18/06/2026 | Aceita |
+| ADR-005 | Centralização de Operações no ControladorSistemaAcademico | 18/06/2026 | Aceita |
+| ADR-006 | Padrão Singleton para o SistemaAcademico | 18/06/2026 | Aceita |
+| ADR-007 | Hierarquia de Exceções Customizadas | 18/06/2026 | Aceita |
+| ADR-008 | Abstração de Repositório para Persistência | 26/06/2026 | Aceita |
+| ADR-009 | Extração da Lógica de Relatórios para ServicoRelatorio | 26/06/2026 | Aceita |
+| ADR-010 | Strategy e Factory para Configuração de Persistência (ServicoPersistencia) | 26/06/2026 | Aceita |
 
 ---
 
@@ -101,3 +108,168 @@ Em conformidade com a Arquitetura em Camadas (Seção 9 do contexto), a camada d
 - **Positivas:** Encapsulamento correto das responsabilidades; arquitetura preparada para suportar múltiplas interfaces (ex: CLI e depois JavaFX).
 - **Negativas / trade-offs:** Mais classes no fluxo (overengineering para um sistema pequeno, mas necessário por propósitos educacionais da disciplina).
 - **Ações de acompanhamento:** A TUS-2370 prevê refatorar operações para um `AcademicSystemController` central. O `TurmaController` deverá ser mesclado ou coordenado de acordo com as necessidades dessa futura US.
+
+
+---
+
+## ADR-004 — Validação com Jakarta Bean Validation
+
+| Campo | Conteúdo |
+|-------|----------|
+| **Status** | Aceita |
+| **Data** | 18/06/2026 |
+| **Autor(es)** | Desenvolvedor |
+| **História relacionada** | TUS-2371 |
+
+### Contexto / Problema
+As validações manuais com cláusulas de guarda (ADR-002) espalhadas pelos serviços e modelos dificultam a manutenção e não seguem um padrão declarativo. É necessário um mecanismo robusto para escalar as validações de domínio.
+
+### Decisão Tomada
+Adotar a especificação Jakarta Bean Validation acoplada ao Hibernate Validator. A validação ocorre através da classe `ValidadorDominio`, que centraliza as regras declaradas por meio de anotações (ex: `@NotBlank`, `@PositiveOrZero`) nas entidades de domínio, substituindo os ifs manuais.
+
+### Justificativa
+O uso de anotações torna as regras de negócio autoexplicativas e padroniza o retorno dos erros, reduzindo a complexidade ciclomática do código (clean code).
+
+### Consequências
+- **Positivas:** Código mais limpo; centralização das validações de entidades; facilidade para criar novas regras no futuro.
+- **Negativas / trade-offs:** Adição de novas bibliotecas externas (`jakarta.validation-api` e `hibernate-validator`), aumentando o tamanho do build.
+
+---
+
+## ADR-005 — Centralização de Operações no ControladorSistemaAcademico
+
+| Campo | Conteúdo |
+|-------|----------|
+| **Status** | Aceita |
+| **Data** | 18/06/2026 |
+| **Autor(es)** | Desenvolvedor |
+| **História relacionada** | TUS-2370 |
+
+### Contexto / Problema
+A classe `Main` interagia diretamente com vários controladores específicos (`ControladorTurma`, `ControladorAvaliacao`), violando o princípio do menor conhecimento (Demeter) e dificultando o gerenciamento do fluxo do sistema.
+
+### Decisão Tomada
+Criar o `ControladorSistemaAcademico` para atuar como uma *Facade* (Fachada) sobre os controladores de domínio. A camada de UI agora se comunica exclusivamente com este controlador central para invocar casos de uso.
+
+### Justificativa
+Essa refatoração centraliza as chamadas de negócio em um único ponto, reduzindo o acoplamento entre a interface do usuário (`Main`) e a camada de controladores internos.
+
+### Consequências
+- **Positivas:** Isolamento e simplificação da `Main`, arquitetura mais coesa e melhor preparo para uma futura interface gráfica.
+
+---
+
+## ADR-006 — Padrão Singleton para o SistemaAcademico
+
+| Campo | Conteúdo |
+|-------|----------|
+| **Status** | Aceita |
+| **Data** | 18/06/2026 |
+| **Autor(es)** | Desenvolvedor |
+| **História relacionada** | US-0000 |
+
+### Contexto / Problema
+O sistema precisa de um ponto centralizado e único para inicializar e gerenciar as instâncias de serviços e controladores ao longo de toda a sua execução.
+
+### Decisão Tomada
+Implementar a classe `SistemaAcademico` usando o padrão criacional **Singleton**. A classe instancia todas as dependências e amarra os controladores e serviços.
+
+### Justificativa
+Garante que haja apenas uma instância dos serviços de domínio e controladores ativos simultaneamente na memória, evitando inconsistências de estado e fornecendo um ponto de acesso global estruturado.
+
+### Consequências
+- **Positivas:** Controle total do ciclo de vida dos componentes; injeção manual de dependências facilitada; ponto único de inicialização.
+- **Negativas:** Singletons representam estado global e podem dificultar o isolamento de testes no futuro se não forem bem injetados.
+
+---
+
+## ADR-007 — Hierarquia de Exceções Customizadas
+
+| Campo | Conteúdo |
+|-------|----------|
+| **Status** | Aceita |
+| **Data** | 18/06/2026 |
+| **Autor(es)** | Desenvolvedor |
+| **História relacionada** | US-2367, US-2368, US-2369 |
+
+### Contexto / Problema
+O uso indiscriminado de exceções genéricas ou de sistema quebravam a execução abruptamente com stacktraces visíveis para o usuário e misturavam erros de negócio com erros de input.
+
+### Decisão Tomada
+Criar uma hierarquia semântica de exceções específicas, derivando de `RuntimeException`: `ExcecaoSistemaAcademico` (negócio), `ExcecaoSegurancaSistema` (com subclasses `ExcecaoAutenticacao` e `ExcecaoAutorizacao`) e `ExcecaoEntradaTeclado`.
+
+### Justificativa
+Essa segregação melhora a clareza do código, permitindo que a `Main` capture e trate especificamente cada cenário de erro, retornando mensagens amigáveis em português e recuperando a execução quando necessário (princípios de *clean code*).
+
+### Consequências
+- **Positivas:** Melhora da experiência do usuário ao evitar quebras bruscas; código auto-documentado.
+
+---
+
+## ADR-008 — Abstração de Repositório para Persistência
+
+| Campo | Conteúdo |
+|-------|----------|
+| **Status** | Aceita |
+| **Data** | 26/06/2026 |
+| **Autor(es)** | Desenvolvedor |
+| **História relacionada** | TUS-2362 |
+
+### Contexto / Problema
+O sistema precisa exportar e armazenar dados fora da memória (persistência). Misturar a lógica de manipulação de arquivos (TXT, JSON, XML) com a lógica de negócio do sistema quebraria a coesão.
+
+### Decisão Tomada
+Implementar o **Repository Pattern**, criando a interface genérica `RepositorioTurma` e, para este momento (TUS-2362), sua implementação concreta `RepositorioTurmaTxt`.
+
+### Justificativa
+Desacopla a regra de negócio da implementação de infraestrutura. Isso permitirá, de forma indolor no futuro (ex: TUS-2373, TUS-2374), plugar implementações para XML ou JSON simplesmente substituindo a injeção da dependência.
+
+### Consequências
+- **Positivas:** Isola as APIs de IO da camada Service/Model. Preparação pronta para injeção de dependência e Strategy pattern quando houver múltiplas formas de salvar.
+- **Negativas:** Requer criar mais classes, mas com um bom ganho de qualidade na arquitetura a longo prazo.
+
+---
+
+## ADR-009 — Extração da Lógica de Relatórios para ServicoRelatorio
+
+| Campo | Conteúdo |
+|-------|----------|
+| **Status** | Aceita |
+| **Data** | 26/06/2026 |
+| **Autor(es)** | Desenvolvedor |
+| **História relacionada** | US-2375, US-2376, TUS-2399 |
+
+### Contexto / Problema
+A geração de relatórios formatados em String estava prevista inicialmente para o Controlador, o que misturaria a lógica de roteamento de requisições com a formatação e as regras pesadas de negócio e cálculo matemático (como soma de pesos das avaliações e checagem de tolerância em doubles).
+
+### Decisão Tomada
+Implementada a classe `ServicoRelatorio` na camada de serviços (`org.example.service`). O Controlador apenas repassa a lista de turmas para o serviço gerar as Strings finais dos relatórios, formatadas adequadamente.
+
+### Justificativa
+Separação de preocupações (Separation of Concerns). O Controlador permanece enxuto e age unicamente como um *Proxy/Facade*, enquanto o serviço retém as regras complexas, tornando muito mais simples escrever testes unitários independentes da interface (ex: `ServicoRelatorioTeste`).
+
+### Consequências
+- **Positivas:** Lógica perfeitamente testável via TDD sem necessidade de subir um controlador completo; fácil extensão para novos relatórios.
+
+---
+
+## ADR-010 — Strategy e Factory para Configuração de Persistência (ServicoPersistencia)
+
+| Campo | Conteúdo |
+|-------|----------|
+| **Status** | Aceita |
+| **Data** | 26/06/2026 |
+| **Autor(es)** | Desenvolvedor |
+| **História relacionada** | US-2372, US-2373, US-2374, TUS-2398 |
+
+### Contexto / Problema
+Com o suporte a diferentes formatos de arquivos (TXT, XML, JSON), acoplar e fixar o formato de salvamento (ex: método `salvarDadosTxt` do controlador) impossibilitava a troca da estratégia de persistência em tempo de execução e violava o princípio OCP (Open/Closed Principle).
+
+### Decisão Tomada
+Criado o `ServicoPersistencia` atuando como um "Contexto" do padrão **Strategy**. Ele mantém internamente o tipo configurado (e.g. `XML`) e, dinamicamente no momento do salvamento, resolve qual implementação concreta de `RepositorioTurma` instanciar, além de prover as checagens de autorização. O sistema não utiliza bibliotecas externas, processando JSON e XML via string builder padrão nativo do Java para os Repositórios recém-criados (`RepositorioTurmaXml` e `RepositorioTurmaJson`).
+
+### Justificativa
+Desacopla de vez a Controladora principal da infraestrutura de I/O. As requisições de salvamento são roteadas de forma invisível para a Controladora, e novas persistências (ex: Banco de Dados SQL) podem ser plugadas modificando apenas um switch-case (uma micro Factory no próprio serviço).
+
+### Consequências
+- **Positivas:** Flexibilidade absoluta no formato dos dados sem mexer no modelo ou nos outros controladores. Assegura também a restrição de perfil para a configuração do sistema em apenas um local.

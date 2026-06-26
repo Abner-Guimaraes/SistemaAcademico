@@ -1,7 +1,7 @@
 package org.example.model;
 
-import org.example.exception.AcademicSystemException;
-import org.example.exception.AuthorizationException;
+import org.example.exception.ExcecaoSistemaAcademico;
+import org.example.exception.ExcecaoAutorizacao;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +9,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class RegistrodeAvaliacaoTest {
+class RegistroDeAvaliacaoTeste {
 
 	
 	//Tests: US-2361
@@ -31,14 +31,14 @@ class RegistrodeAvaliacaoTest {
     }
 
     @Test
-    @DisplayName("CA6 - Deve lançar AcademicSystemException ao tentar cadastrar avaliação com dados inválidos")
+    @DisplayName("CA6 - Deve lançar ExcecaoSistemaAcademico ao tentar cadastrar avaliação com dados inválidos")
     void deveLancarexcecaoQuandoDadosDaAvaliacaoForemInvalidos() {
-        assertThrows(org.example.exception.AcademicSystemException.class, () -> {
-            org.example.validation.DomainValidator.validate(new Prova("Prova Inválida", -5.0, 0.4));
+        assertThrows(org.example.exception.ExcecaoSistemaAcademico.class, () -> {
+            org.example.validation.ValidadorDominio.validate(new Prova("Prova Inválida", -5.0, 0.4));
         }, "Deve rejeitar nota máxima negativa");
 
-        assertThrows(org.example.exception.AcademicSystemException.class, () -> {
-            org.example.validation.DomainValidator.validate(new Prova("Prova Inválida", 10.0, -0.1));
+        assertThrows(org.example.exception.ExcecaoSistemaAcademico.class, () -> {
+            org.example.validation.ValidadorDominio.validate(new Prova("Prova Inválida", 10.0, -0.1));
         }, "Deve rejeitar peso negativo");
     }
     
@@ -57,9 +57,9 @@ class RegistrodeAvaliacaoTest {
     }
 
     @Test
-    @DisplayName("CA5 - Deve lançar AcademicSystemException quando o tipo de avaliação selecionado for inválido")
+    @DisplayName("CA5 - Deve lançar ExcecaoSistemaAcademico quando o tipo de avaliação selecionado for inválido")
     void deveLancarExcecaoParaTipoAvaliacaoInvalido() {
-        assertThrows(org.example.exception.AcademicSystemException.class, () -> {
+        assertThrows(org.example.exception.ExcecaoSistemaAcademico.class, () -> {
             AvaliacaoFactory.criar("Redacao", "Enem", 10.0, 0.5);
         }, "Deve rejeitar tipos que não sejam os quatro oficiais");
     }
@@ -70,7 +70,7 @@ class RegistrodeAvaliacaoTest {
         GerenciadorDeTurmas gerenciador = new GerenciadorDeTurmas();
         Avaliacao prova = AvaliacaoFactory.criar("Prova", "P1", 10.0, 0.4);
 
-        assertThrows(AcademicSystemException.class, () -> {
+        assertThrows(ExcecaoSistemaAcademico.class, () -> {
             gerenciador.registrarAvaliacao("CODIGO_INEXISTENTE", prova, "PROFESSOR");
         }, "Deve rejeitar registro em turma inexistente");
     }
@@ -83,7 +83,7 @@ class RegistrodeAvaliacaoTest {
         
         Avaliacao prova = AvaliacaoFactory.criar("Prova", "P1", 10.0, 0.4);
 
-        assertThrows(AuthorizationException.class, () -> {
+        assertThrows(ExcecaoAutorizacao.class, () -> {
             gerenciador.registrarAvaliacao("CC3A", prova, "ALUNO");
         }, "Usuários sem privilégio não podem registrar avaliações");
     }

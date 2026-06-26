@@ -1,6 +1,6 @@
 package org.example.model;
 
-import org.example.exception.AcademicSystemException;
+import org.example.exception.ExcecaoSistemaAcademico;
 
 public class AvaliacaoFactory {
 
@@ -22,7 +22,7 @@ public class AvaliacaoFactory {
                 
             default:
                 // AC5: Se o texto digitado não for nenhum dos 4 acima, o sistema lança a exceção e barra o registro!
-                throw new AcademicSystemException("Tipo de avaliação inválido: " + tipo);
+                throw new ExcecaoSistemaAcademico("Tipo de avaliação inválido: " + tipo);
         }
     }
 }

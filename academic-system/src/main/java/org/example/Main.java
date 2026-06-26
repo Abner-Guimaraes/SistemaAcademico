@@ -1,97 +1,179 @@
 package org.example;
 
-import org.example.model.Avaliacao;
-
-import org.example.model.AvaliacaoFactory;
-import org.example.model.GerenciadorDeTurmas;
 import org.example.model.Turma;
-
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        GerenciadorDeTurmas gerenciador = new GerenciadorDeTurmas();
-        gerenciador.salvarTurma(new Turma("CC3A", "Orientação a Objetos"));
+        Scanner scanner = new Scanner(System.in);
+        SistemaAcademico system = SistemaAcademico.getInstance();
+        org.example.controller.ControladorSistemaAcademico controller = system.getAcademicSystemController();
 
-        System.out.println("Bem-vindo ao Sistema Acadêmico!");
-        System.out.println("-----------------------------------");
+        boolean executando = true;
 
-        java.util.Scanner scanner = new java.util.Scanner(System.in);
-        AcademicSystem system = AcademicSystem.getInstance();
-        org.example.controller.AcademicSystemController controller = system.getAcademicSystemController();
+        while (executando) {
+            System.out.println("\n=== TELA DE LOGIN ===");
+            System.out.println("1. Login como ADMIN");
+            System.out.println("2. Login como PROFESSOR");
+            System.out.println("3. Sair do Sistema");
+            System.out.print("Escolha: ");
+            String opcaoLogin = scanner.nextLine();
 
-        System.out.println("Usuário logado: PROFESSOR");
-        System.out.println("--- US-2361: Registro de Avaliação ---");
-        
-        System.out.print("Digite o código da turma: ");
-        String codigoTurma = scanner.nextLine();
-        
-        System.out.print("Digite o nome da avaliação (ex: P1): ");
-        String nomeAvaliacao = scanner.nextLine();
-        
-        System.out.print("Digite o tipo da avaliação (Prova, Trabalho Prático, Seminário, Atividade): ");
-        String tipoAvaliacao = scanner.nextLine();
-        
-        double valorAvaliacao = 0.0;
-        double pesoAvaliacao = 0.0;
-        try {
-            System.out.print("Digite o valor da avaliação: ");
-            try {
-                valorAvaliacao = Double.parseDouble(scanner.nextLine());
-            } catch (NumberFormatException e) {
-                throw new org.example.exception.KeyboardInputException("Valor numérico inválido informado para avaliação.");
-            }
-            
-            System.out.print("Digite o peso da avaliação (ex: 0.4): ");
-            try {
-                pesoAvaliacao = Double.parseDouble(scanner.nextLine());
-            } catch (NumberFormatException e) {
-                throw new org.example.exception.KeyboardInputException("Valor numérico inválido informado para peso.");
+            if (opcaoLogin.equals("3")) {
+                executando = false;
+                break;
             }
 
-            // FIM DA FASE 1 - Captura concluída. 
-            System.out.println("\n[DEBUG] Dados capturados: Turma=" + codigoTurma + ", Nome=" + nomeAvaliacao + ", Tipo=" + tipoAvaliacao + ", Valor=" + valorAvaliacao + ", Peso=" + pesoAvaliacao);
-            
-            // INÍCIO DA FASE 2 - Passagem pelo Controller
-            try {
-                controller.registrarAvaliacao(codigoTurma, nomeAvaliacao, tipoAvaliacao, valorAvaliacao, pesoAvaliacao, "PROFESSOR");
-                System.out.println("Comando enviado ao Controller com sucesso!");
-            } catch (org.example.exception.AcademicSystemException e) {
-                System.out.println("Erro de Domínio ao registrar avaliação: " + e.getMessage());
-            } catch (org.example.exception.SecuritySystemException e) {
-                System.out.println("Erro de Segurança: " + e.getMessage());
-            } catch (Exception e) {
-                System.out.println("Erro inesperado ao tentar registrar avaliação: " + e.getMessage());
+            String usuarioLogado = "";
+            if (opcaoLogin.equals("1")) {
+                usuarioLogado = "ADMIN";
+            } else if (opcaoLogin.equals("2")) {
+                usuarioLogado = "PROFESSOR";
+            } else {
+                System.out.println("Opção inválida. Tente novamente.");
+                continue;
             }
-        } catch (org.example.exception.KeyboardInputException e) {
-            System.out.println("Erro de Entrada de Usuário: " + e.getMessage());
+
+            boolean logado = true;
+            while (logado) {
+                System.out.println("\n=== MENU ACADÊMICO ===");
+                System.out.println("Usuário logado: " + usuarioLogado);
+                
+                if (usuarioLogado.equals("ADMIN")) {
+                    System.out.println("1. Cadastrar Turma");
+                    System.out.println("2. Configurar Persistência");
+                    System.out.println("3. Salvar Dados");
+                    System.out.println("4. Relatório de Persistência");
+                    System.out.println("5. Listar Turmas");
+                    System.out.println("6. Resumo de Avaliações (Relatório)");
+                    System.out.println("7. Pesos das Avaliações (Relatório)");
+                    System.out.println("8. Logout");
+                    System.out.println("9. Sair do Sistema");
+                } else if (usuarioLogado.equals("PROFESSOR")) {
+                    System.out.println("1. Cadastrar Avaliação");
+                    System.out.println("2. Listar Turmas");
+                    System.out.println("3. Resumo de Avaliações (Relatório)");
+                    System.out.println("4. Pesos das Avaliações (Relatório)");
+                    System.out.println("5. Logout");
+                    System.out.println("6. Sair do Sistema");
+                }
+                
+                System.out.print("Escolha uma opção: ");
+                String opcao = scanner.nextLine();
+
+                try {
+                    if (usuarioLogado.equals("ADMIN")) {
+                        switch (opcao) {
+                            case "1":
+                                System.out.print("Digite o código da nova turma: ");
+                                String codigo = scanner.nextLine();
+                                System.out.print("Digite o título da nova turma: ");
+                                String titulo = scanner.nextLine();
+                                controller.registrarTurma(codigo, titulo, usuarioLogado);
+                                System.out.println("Turma '" + titulo + "' registrada com sucesso.");
+                                break;
+                            case "2":
+                                System.out.print("Digite o tipo de persistência desejada (TXT, XML, JSON): ");
+                                String tipo = scanner.nextLine();
+                                controller.configurarPersistencia(tipo, usuarioLogado);
+                                System.out.println("Persistência configurada para: " + tipo.toUpperCase());
+                                break;
+                            case "3":
+                                controller.salvarDados(usuarioLogado);
+                                System.out.println("Dados salvos com sucesso.");
+                                break;
+                            case "4":
+                                System.out.println(controller.gerarRelatorioPersistencia(usuarioLogado));
+                                break;
+                            case "5":
+                                System.out.println("Turmas cadastradas:");
+                                for (Turma t : controller.listarTurmas()) {
+                                    System.out.println("- " + t.getCodigo() + " : " + t.getTitulo());
+                                }
+                                break;
+                            case "6":
+                                System.out.println(controller.gerarResumoAvaliacoes(usuarioLogado));
+                                break;
+                            case "7":
+                                System.out.println(controller.gerarRelatorioPesos(usuarioLogado));
+                                break;
+                            case "8":
+                                logado = false;
+                                System.out.println("Logout efetuado com sucesso.");
+                                break;
+                            case "9":
+                                logado = false;
+                                executando = false;
+                                break;
+                            default:
+                                throw new org.example.exception.ExcecaoEntradaTeclado("Opção de menu inválida.");
+                        }
+                    } else if (usuarioLogado.equals("PROFESSOR")) {
+                        switch (opcao) {
+                            case "1":
+                                System.out.print("Digite o código da turma: ");
+                                String codigoTurma = scanner.nextLine();
+                                System.out.print("Digite o nome da avaliação: ");
+                                String nomeAvaliacao = scanner.nextLine();
+                                System.out.print("Digite o tipo da avaliação (Prova, Trabalho Prático, Seminário, Atividade): ");
+                                String tipoAvaliacao = scanner.nextLine();
+                                
+                                double valorAvaliacao;
+                                System.out.print("Digite o valor da avaliação: ");
+                                try {
+                                    valorAvaliacao = Double.parseDouble(scanner.nextLine());
+                                } catch (NumberFormatException e) {
+                                    throw new org.example.exception.ExcecaoEntradaTeclado("Valor numérico inválido informado para avaliação.");
+                                }
+                                
+                                double pesoAvaliacao;
+                                System.out.print("Digite o peso da avaliação: ");
+                                try {
+                                    pesoAvaliacao = Double.parseDouble(scanner.nextLine());
+                                } catch (NumberFormatException e) {
+                                    throw new org.example.exception.ExcecaoEntradaTeclado("Valor numérico inválido informado para peso.");
+                                }
+                                
+                                controller.registrarAvaliacao(codigoTurma, nomeAvaliacao, tipoAvaliacao, valorAvaliacao, pesoAvaliacao, usuarioLogado);
+                                System.out.println("Avaliação registrada com sucesso.");
+                                break;
+                            case "2":
+                                System.out.println("Turmas cadastradas:");
+                                for (Turma t : controller.listarTurmas()) {
+                                    System.out.println("- " + t.getCodigo() + " : " + t.getTitulo());
+                                }
+                                break;
+                            case "3":
+                                System.out.println(controller.gerarResumoAvaliacoes(usuarioLogado));
+                                break;
+                            case "4":
+                                System.out.println(controller.gerarRelatorioPesos(usuarioLogado));
+                                break;
+                            case "5":
+                                logado = false;
+                                System.out.println("Logout efetuado com sucesso.");
+                                break;
+                            case "6":
+                                logado = false;
+                                executando = false;
+                                break;
+                            default:
+                                throw new org.example.exception.ExcecaoEntradaTeclado("Opção de menu inválida.");
+                        }
+                    }
+                } catch (org.example.exception.ExcecaoSistemaAcademico e) {
+                    System.out.println("Erro de Domínio: " + e.getMessage());
+                } catch (org.example.exception.ExcecaoSegurancaSistema e) {
+                    System.out.println("Erro de Segurança: " + e.getMessage());
+                } catch (org.example.exception.ExcecaoEntradaTeclado e) {
+                    System.out.println("Erro de Entrada de Usuário: " + e.getMessage());
+                } catch (Exception e) {
+                    System.out.println("Erro inesperado: " + e.getMessage());
+                }
+            }
         }
         
-        System.out.println("-----------------------------------");
-        System.out.println("--- US-2363: Cadastro de Turmas ---");
-        // Reaproveitando o scanner e o controller criados acima
-
-        System.out.println("Simulando usuário logado como: ADMIN");
-        String usuarioParaTurma = "ADMIN";
-        
-        System.out.print("Digite o código da nova turma: ");
-        String codigo = scanner.nextLine();
-        
-        System.out.print("Digite o título da nova turma: ");
-        String titulo = scanner.nextLine();
-
-        try {
-            controller.registrarTurma(codigo, titulo, usuarioParaTurma);
-            System.out.println("Sucesso: Turma '" + titulo + "' registrada!");
-            System.out.println("Turmas cadastradas atualmente na memória do Service:");
-            for (Turma t : controller.listarTurmas()) {
-                System.out.println("- " + t.getCodigo() + " : " + t.getTitulo());
-            }
-        } catch (org.example.exception.AcademicSystemException e) {
-            System.out.println("Erro de Negócio ao registrar turma: " + e.getMessage());
-        } catch (org.example.exception.SecuritySystemException e) {
-            System.out.println("Erro de Segurança: " + e.getMessage());
-        }
-        
+        System.out.println("Sistema encerrado.");
         scanner.close();
     }
 }

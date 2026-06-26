@@ -3,41 +3,37 @@ import java.util.List;
 import java.util.ArrayList;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.EqualsAndHashCode;
 
+@Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Turma {
 	
 	@NotBlank(message = "O código da turma não pode ser vazio.")
+	@EqualsAndHashCode.Include
 	private String codigo;
 	
 	@NotBlank(message = "O título da turma não pode ser vazio.")
 	private String titulo;
 	private ArrayList<Avaliacao> avaliacoes;
 
-	
-	
-
     public Turma(String codigo, String titulo) {
     	this.codigo = codigo;
     	this.titulo = titulo;
     	this.avaliacoes = new ArrayList<>();
-    	
     }
 
-    
     //AC6: Dados inválidos de avaliação,
     //quando uma tentativa de registro de avaliação é feita,
-    //então o sistema deve rejeitar a operação lançando uma AcademicSystemException.
+    //então o sistema deve rejeitar a operação lançando uma ExcecaoSistemaAcademico.
     public void adicionarAvaliacao(Avaliacao avaliacao) { 
     	if(avaliacao == null) {
     		throw new IllegalArgumentException("A avaliação não pode ser nula");
     	}
     	this.avaliacoes.add(avaliacao);
-    	
     }
 
-    public String getCodigo() {return codigo;}
-    public String getTitulo() {return titulo;}
- 
     public List<Avaliacao> getAvaliacoes() { 
         return new ArrayList<>(avaliacoes); 
     }

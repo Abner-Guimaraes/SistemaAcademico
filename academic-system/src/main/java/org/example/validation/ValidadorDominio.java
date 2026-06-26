@@ -4,12 +4,12 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import org.example.exception.AcademicSystemException;
+import org.example.exception.ExcecaoSistemaAcademico;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class DomainValidator {
+public class ValidadorDominio {
     private static final Validator validator;
 
     static {
@@ -24,7 +24,7 @@ public class DomainValidator {
             String errorMessages = violations.stream()
                 .map(v -> v.getPropertyPath() + " " + v.getMessage())
                 .collect(Collectors.joining(", "));
-            throw new AcademicSystemException("Erro de validação: " + errorMessages);
+            throw new ExcecaoSistemaAcademico("Erro de validação: " + errorMessages);
         }
     }
 }

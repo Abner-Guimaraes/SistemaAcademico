@@ -25,16 +25,107 @@ Use esta seção para notas mais longas sobre a tarefa atual:
 
 | Data de conclusão | História / Requisito | Resumo do que foi entregue | Commit / PR (opcional) |
 |-------------------|----------------------|----------------------------|------------------------|
-| 10/06/2026        | US-2361              | Registrar Avaliação na Turma | *Aguardando push* |
-| 11/06/2026        | US-2363              | Registrar Turmas por Entrada de Teclado | *Aguardando push* |
+| 10/06/2026        | US-2361              | Registrar Avaliação na Turma | 3d63c9d |
+| 11/06/2026        | US-2363              | Registrar Turmas por Entrada de Teclado | beabdaf |
 | 18/06/2026        | US-2367              | Handle academic domain errors with custom exceptions | 9fa8148 |
 | 18/06/2026        | US-2368              | Handle keyboard input errors with custom exceptions | 7d93f84 |
 | 18/06/2026        | US-2369              | Handle authentication and authorization errors with custom exceptions | 740a413 |
 | 18/06/2026        | US-0000              | Startup Academic System | 682bb74 |
 | 18/06/2026        | TUS-2370             | Refactor menu operations into AcademicSystemController | e5d5b21 |
 | 18/06/2026        | TUS-2371             | Validate academic domain objects using Jakarta Bean Validation | 2329f9c |
+| 26/06/2026        | TUS-2362             | Persist class assessments to TXT file | - |
+| 26/06/2026        | US-2364              | Manage academic system through command line menu | - |
+| 26/06/2026        | TUS-2365             | Refactor domain model using Lombok | - |
+| 26/06/2026        | TUS-2382             | Define equality for identifiable domain objects | - |
+| 26/06/2026        | US-2375              | Generate class assessment summary report | - |
+| 26/06/2026        | US-2376              | Generate assessment weight report | - |
+| 26/06/2026        | US-2372              | Configure persistence type as administrator | - |
+| 26/06/2026        | US-2373              | Save academic data to XML file | - |
+| 26/06/2026        | US-2374              | Save academic data to JSON file | - |
+| 26/06/2026        | US-2377              | Generate persistence configuration report | - |
 
 ### Registro detalhado
+
+#### 26/06/2026 — Persistence Block (US-2372, US-2373, US-2374, US-2377)
+
+- **Histórias:** 
+  - US-2372: Configure persistence type as administrator
+  - US-2373: Save academic data to XML file
+  - US-2374: Save academic data to JSON file
+  - US-2377: Generate persistence configuration report
+- **O que foi implementado:**
+  - Foi criado o `ServicoPersistencia` que consolida a responsabilidade de gerenciar como o sistema salva os dados (TUS-2398 atendido de tabela). Ele detém o tipo de persistência (`TXT`, `XML`, `JSON`) e direciona ao repositório correspondente, além de bloquear perfis não-admin.
+  - Implementadas as classes `RepositorioTurmaXml` e `RepositorioTurmaJson` que assinam a interface `RepositorioTurma` e executam o *parsing* manual dos dados sem bibliotecas externas.
+  - Criado o método de relatório de persistência (`gerarRelatorioPersistencia`) no `ServicoRelatorio`.
+  - O `ControladorSistemaAcademico` agora delega o salvamento de dados (`salvarDados()`) para o `ServicoPersistencia`, extinguindo a limitação do TXT forçado no controlador.
+  - Os menus de ADMIN na classe `Main` foram atualizados para permitir configurar a persistência e gerar o relatório da configuração.
+- **Como foi validado:** Criação e execução dos testes unitários `ServicoPersistenciaTeste` abrangendo trocas de configuração e salvamento por perfis corretos. O relatório foi testado via `ServicoRelatorioTeste`. Build verde (`mvn clean test`).
+
+#### 26/06/2026 — Generate assessment weight report (US-2376)
+
+- **História:** US-2376 - Generate assessment weight report
+- **O que foi implementado:**
+  - Adição do método `gerarRelatorioPesos` na classe `ServicoRelatorio`.
+  - O método varre as turmas, soma os pesos (usando `double`) e informa se o peso total resulta exatamente em 1.0 (margem de erro para double) classificando como VÁLIDA ou INVÁLIDA (AC1 a AC5).
+  - Adicionada a opção correspondente "Pesos das Avaliações (Relatório)" na `Main` e integração ao Controller.
+- **Como foi validado:** Via TDD. Adicionado `deveGerarRelatorioPesoValido`, `deveGerarRelatorioPesoInvalido` e `deveGerarRelatorioPesoZeroParaTurmaSemAvaliacao` na classe `ServicoRelatorioTeste`. Executado com sucesso via `mvn clean test`.
+- **Observações:** O AC7 pede log (Auditoria), porém segue no aguardo da implementação da infraestrutura da história TUS-2390.
+
+#### 26/06/2026 — Generate class assessment summary report (US-2375)
+
+- **História:** US-2375 - Generate class assessment summary report
+- **O que foi implementado:**
+  - Criação do serviço `ServicoRelatorio` focado puramente na lógica de relatórios.
+  - O controller principal agora atua como ponte repassando as turmas cadastradas para o serviço formatar o relatório textual.
+  - Atualização nos menus iterativos da `Main` adicionando a opção de `Resumo de Avaliações` tanto para `ADMIN` quanto para `PROFESSOR`.
+- **Como foi validado:** Via desenvolvimento guiado por testes (TDD). A classe `ServicoRelatorioTeste` verifica detalhadamente AC1, AC2, AC3 e AC4 garantindo a formatação. Executado `mvn clean test`.
+- **Observações / débito técnico:** A auditoria (AC6) exigida não foi aplicada de forma completa por causa do débito persistente (TUS-2390) que deve configurar a infraestrutura de Log.
+
+#### 26/06/2026 — Define equality for identifiable domain objects (TUS-2382)
+
+- **História:** TUS-2382 - Define equality for identifiable domain objects
+- **O que foi implementado:**
+  - Uso da anotação `@EqualsAndHashCode(onlyExplicitlyIncluded = true)` na classe `Turma`.
+  - Inclusão apenas do campo `codigo` como chave de igualdade com `@EqualsAndHashCode.Include`.
+  - Paralelamente, resolvido o débito técnico em `RepositorioTurmaTxt` adicionando injeção do caminho do arquivo no construtor.
+- **Como foi validado:** Build via `mvn clean test`.
+- **Observações:** A entidade `User` mencionada na história ainda não foi criada. A regra será aplicada nela futuramente.
+
+#### 26/06/2026 — Refactor domain model using Lombok (TUS-2365)
+
+- **História:** TUS-2365 - Refactor domain model using Lombok
+- **O que foi implementado:**
+  - Inclusão da dependência `lombok` (versão 1.18.32) no `pom.xml` com escopo *provided*.
+  - Remoção de todos os métodos de acesso verbosos (`getters` criados manualmente) das entidades `Turma` e `Avaliacao`.
+  - Remoção de repetição do `getPeso()` explícito e fixo nas subclasses `Prova`, `TrabalhoPratico`, `Seminario` e `Atividade`, substituindo pelo funcionamento nativo ativado pela abstração da superclasse.
+  - Inclusão da anotação `@Getter` ao nível das classes `Turma` e `Avaliacao`, reduzindo substancialmente o boilerplate code.
+- **Como foi validado:** Compilado e testado usando `mvn clean test`. Os testes (que ainda referenciam os métodos get) continuaram operacionais provando que o processador de anotações funcionou corretamente.
+- **Observações / débito técnico:** Próximo passo ideal seria usarmos `@EqualsAndHashCode` quando a história TUS-2382 for abordada.
+
+#### 26/06/2026 — Manage academic system through command line menu (US-2364)
+
+- **História:** US-2364 - Manage academic system through command line menu
+- **O que foi implementado:**
+  - Refatoração completa da `Main` para abandonar o "script de testes linear" e adotar um loop `while` infinito (AC1).
+  - Simulação de login, onde o usuário pode escolher entrar como `ADMIN` ou `PROFESSOR`.
+  - Separação de menus baseada no perfil escolhido. O ADMIN pode registrar turmas e salvar TXT, enquanto PROFESSOR pode registrar avaliações (AC2, AC3).
+  - Uso de comandos `switch` para acionar o Controller correto de acordo com a opção (AC4).
+  - Tratamento de falhas e opções inválidas usando nossas Exceptions personalizadas sem quebrar o loop do sistema (AC5, AC6).
+  - Operação de Logout (voltar para a tela de perfis) e Sair (encerrar o sistema) (AC7, AC8).
+- **Como foi validado:** Build via `mvn clean test` obteve sucesso. Foi validado mentalmente checando as ramificações de menu.
+- **Observações / débito técnico:** A tela de login é apenas simulada por enquanto. A autenticação real será introduzida na US-2366.
+
+#### 26/06/2026 — Persist class assessments to TXT file (TUS-2362)
+
+- **História:** TUS-2362 - Persist class assessments to TXT file
+- **O que foi implementado:**
+  - Criação da interface `RepositorioTurma` para abstrair a persistência.
+  - Implementação `RepositorioTurmaTxt` que salva dados de turmas e avaliações no formato TXT.
+  - Adição do método `salvarDadosTxt(String usuarioAdmin)` no `ServicoTurma` e repasse através de `ControladorTurma` e `ControladorSistemaAcademico`.
+  - Verificação de perfil `ADMIN` integrada no Serviço para autorizar o salvamento.
+  - Teste manual simulado no `Main`.
+- **Como foi validado:** Build e suíte de testes aprovados (`mvn clean test`). O `Main` imprime a mensagem de sucesso na simulação com perfil ADMIN.
+- **Observações / débito técnico:** O caminho do arquivo TXT está fixo (`turmas.txt`). Futuramente pode ser parametrizado.
 
 #### 18/06/2026 — Validate academic domain objects using Jakarta Bean Validation (TUS-2371)
 
