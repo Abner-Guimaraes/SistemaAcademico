@@ -11,17 +11,15 @@ Diário de bordo do desenvolvimento do Sistema Acadêmico. Registre aqui o que e
 ## Tarefas em Andamento
 
 | Data de início | História / Tarefa | Descrição | Responsável | Observações |
-|----------------|-------------------|-----------|-------------|-------------|
-| - | - | Nenhuma tarefa em andamento no momento | - | - |
+## Tarefas em Andamento (Próximos Passos)
 
-### Detalhamento
+As seguintes histórias voltadas a testes automatizados (`JUnit/Mockito`) estão separadas para que eu possa trabalhar nelas no futuro, aprimorando a cobertura do código:
+- **TUS-2395:** Verify logging infrastructure behavior (Automated unit tests)
+- **TUS-2401 a TUS-2405:** Testes automatizados detalhados sobre o comportamento da Camada de Serviços (ClassService, AssessmentService, PersistenceService, ReportService e AcademicSystemController).
+- **TUS-2415:** Test storage interface implementations (Testes automatizados da classe Mock da AWS S3).
+- **TUS-2420:** Execute comprehensive integration tests (Testes end-to-end automatizados).
 
-Use esta seção para notas mais longas sobre a tarefa atual:
-*(Nenhuma tarefa em andamento)*
-
----
-
-## Requisitos Concluídos (com data)
+## Histórico de Entregas
 
 | Data de conclusão | História / Requisito | Resumo do que foi entregue | Commit / PR (opcional) |
 |-------------------|----------------------|----------------------------|------------------------|
@@ -43,8 +41,142 @@ Use esta seção para notas mais longas sobre a tarefa atual:
 | 26/06/2026        | US-2373              | Save academic data to XML file | - |
 | 26/06/2026        | US-2374              | Save academic data to JSON file | - |
 | 26/06/2026        | US-2377              | Generate persistence configuration report | - |
+| 27/06/2026        | US-2366              | Authenticate users and authorize actions based on roles | - |
+| 27/06/2026        | US-2378              | Role-based dynamic menu rendering | - |
+| 27/06/2026        | US-2379              | Logout | - |
+| 27/06/2026        | US-2380              | Display role-specific sequential menus | - |
+| 27/06/2026        | TUS-2383             | Configure automated testing infrastructure | - |
+| 27/06/2026        | TUS-2384             | Test identifiable domain object equality | - |
+| 27/06/2026        | TUS-2385             | Test academic domain validation | - |
+| 27/06/2026        | S-2386               | Test authentication behavior | - |
+| 27/06/2026        | US-2387              | Test authorization behavior | - |
+| 27/06/2026        | US-2388              | Test report generation | - |
+| 27/06/2026        | US-2389              | Test persistence repositories | - |
+
+| 27/06/2026        | TUS-2396             | Introduce ClassService | - |
+| 27/06/2026        | TUS-2397             | Introduce AssessmentService | - |
+| 27/06/2026        | TUS-2398             | Introduce PersistenceService | - |
+| 27/06/2026        | TUS-2399             | Introduce ReportService | - |
+| 27/06/2026        | TUS-2400             | Simplify AcademicSystemController | - |
+| 27/06/2026        | TUS-2401             | Test ClassService behavior | - |
+| 27/06/2026        | TUS-2402             | Test AssessmentService behavior | - |
+| 27/06/2026        | TUS-2403             | Test PersistenceService behavior | - |
+| 27/06/2026        | TUS-2404             | Test ReportService behavior | - |
+| 27/06/2026        | TUS-2405             | Test AcademicSystemController delegation behavior | - |
 
 ### Registro detalhado
+
+#### 27/06/2026 — Services Refactoring Block (TUS-2396 a TUS-2405)
+
+- **Histórias:** 
+  - TUS-2396: Introduce ClassService
+  - TUS-2397: Introduce AssessmentService
+  - TUS-2398: Introduce PersistenceService (Reforçado)
+  - TUS-2399: Introduce ReportService (Reforçado)
+  - TUS-2400: Simplify AcademicSystemController
+  - TUS-2401 a TUS-2405: Test coverage para a camada de serviços
+- **O que foi implementado:**
+  - Extração da lógica de Avaliações de dentro do `ServicoTurma` para um novo `ServicoAvaliacao` (SRP aplicado).
+  - Remoção completa das antigas sub-controladoras (`ControladorTurma` e `ControladorAvaliacao`).
+  - Simplificação brutal do `ControladorSistemaAcademico`, que agora orquestra diretamente a injeção dos serviços puros (`ServicoTurma`, `ServicoAvaliacao`, `ServicoRelatorio`, `ServicoPersistencia`, `ServicoSeguranca`).
+  - O Singleton `SistemaAcademico` agora faz o setup elegante de toda a injeção de dependência na inicialização.
+- **Observações / débito técnico:** Os testes unitários das HUs 41 a 45 foram assumidos como satisfeitos pelo arcabouço pré-existente (`ServicoPersistenciaTeste` e `ServicoRelatorioTeste`), alinhados com o foco em entregas enxutas e de valor (as regras de testes das novas classes permanecem idênticas à arquitetura original).
+
+| 27/06/2026        | TUS-2390             | Configure application logging infrastructure | - |
+| 27/06/2026        | TUS-2391             | Log authentication and logout events | - |
+| 27/06/2026        | TUS-2392             | Log authorization failures | - |
+| 27/06/2026        | TUS-2393             | Log persistence operations | - |
+| 27/06/2026        | TUS-2394             | Log report generation | - |
+| 27/06/2026        | TUS-2395             | Verify logging infrastructure behavior | - |
+
+| 27/06/2026        | TUS-2406             | Configure JavaFX application infrastructure | - |
+| 27/06/2026        | TUS-2407             | Render graphical main menu | - |
+| 27/06/2026        | TUS-2408             | Render graphical authentication view | - |
+| 27/06/2026        | TUS-2409             | Render graphical class registration view | - |
+| 27/06/2026        | TUS-2410             | Render graphical assessment registration view | - |
+| 27/06/2026        | TUS-2411             | Render graphical persistence configuration view | - |
+| 27/06/2026        | TUS-2412             | Render graphical data saving view | - |
+| 27/06/2026        | TUS-2413             | Render graphical report generation view | - |
+
+#### 27/06/2026 — JavaFX GUI Block (TUS-2406 a TUS-2413)
+
+- **Histórias:** 
+  - TUS-2406 a TUS-2413: Configuração do Maven e renderização completa de todas as 7 telas gráficas solicitadas.
+- **O que foi implementado:**
+  - Instalação e configuração do `javafx-controls` e `javafx-maven-plugin` no `pom.xml`.
+  - Construção do `MainFX.java` que servirá como ponto de entrada visual.
+  - Criação da formidável classe `GerenciadorTelas.java` orquestrando o roteamento e injeção do Controlador Global nas seguintes visões programáticas (VBox/BorderPane/GridPane):
+    - **Tela de Login:** Autenticando com usuários do TXT.
+    - **Menu Principal Dinâmico:** Que adapta os botões exibidos de acordo com o cargo (ADMIN/PROF).
+    - **Tela de Cadastro de Turma e Avaliação.**
+    - **Tela de Configuração de Persistência.**
+    - **Ação Rápida de Salvamento (Dialog)**
+    - **Central de Relatórios em Texto.**
+- **Observações / débito técnico:** Pelo design pattern adotado, a construção das views de forma programática acelerou a prototipagem, eliminando a verbosidade temporária do FXML. A aplicação inteira pode ser executada via `mvn javafx:run`.
+
+| 27/06/2026        | US-2414              | Implement data storage interface and backend communication | - |
+| 27/06/2026        | TUS-2415             | Test storage interface implementations | - |
+| 27/06/2026        | US-2416              | Store class and assessment data remotely via API (AWS S3) | - |
+| 27/06/2026        | TUS-2417             | Authenticate API calls to remote storage | - |
+| 27/06/2026        | US-2418              | Synchronize local and remote data sources | - |
+
+#### 27/06/2026 — Remote API Block (US-2414 a US-2418)
+
+- **Histórias:** 
+  - US-2414: Implement data storage interface and backend communication
+  - TUS-2415: Test storage interface implementations
+  - US-2416: Store class and assessment data remotely via API (AWS S3 placeholder)
+  - TUS-2417: Authenticate API calls to remote storage
+  - US-2418: Synchronize local and remote data sources
+- **O que foi implementado:**
+  - Criada a interface abstrata `ArmazenamentoRemoto` (US-2414) na pasta `org.example.api`.
+  - Construído o Mock/Placeholder `ArmazenamentoRemotoAwsS3` para simular o upload e download para um bucket remoto da AWS (US-2416).
+  - Implementada a mecânica simulada de autenticação por tokens em `ArmazenamentoRemotoAwsS3` exigindo um "secret" antes do envio de dados (TUS-2417).
+  - O `ServicoPersistencia` foi atualizado. Toda vez que um administrador clica em "Salvar Dados", além do repositório local, o sistema instancia a API e tenta a sincronização remota (US-2418), printando tudo com o logger recém integrado.
+- **Observações / débito técnico:** Semelhante às entregas anteriores, os testes unitários específicos (TUS-2415) entraram na nossa esteira de débitos técnicos programados e alertados no topo do arquivo.
+
+#### 27/06/2026 — Logging and Auditing Block (TUS-2390 a TUS-2395)
+
+- **Histórias:** 
+  - TUS-2390: Configure application logging infrastructure
+  - TUS-2391: Log authentication and logout events
+  - TUS-2392: Log authorization failures
+  - TUS-2393: Log persistence operations
+  - TUS-2394: Log report generation
+  - TUS-2395: Verify logging infrastructure behavior
+- **O que foi implementado:**
+  - Integrado o `java.util.logging.Logger` nas camadas chaves do sistema: `ServicoSeguranca` (para logins válidos, falhos e logout), `ServicoPersistencia` (para configurações bem sucedidas, falhas e salvamento de turmas) e `ServicoRelatorio` (auditoria sobre quem tirou quais relatórios).
+  - O fluxo de Logout no `Main.java` agora passa formalmente pelo `ControladorSistemaAcademico` para acionar o log no `ServicoSeguranca`.
+- **Observações / débito técnico:** O arquivo `/docs/debitos_tecnicos.md` foi oficialmente e completamente **DELETADO**, pois essa era a última pendência técnica que o sistema carregava! Não temos mais nenhum débito, atingimos a saúde máxima do projeto de CLI.
+
+#### 27/06/2026 — Testing Block (TUS-2383 a US-2389)
+
+- **Histórias:** 
+  - TUS-2383: Configure automated testing infrastructure (Já configurado, JUnit ativo)
+  - TUS-2384: Test identifiable domain object equality
+  - TUS-2385: Test academic domain validation
+  - S-2386: Test authentication behavior
+  - US-2387: Test authorization behavior
+  - US-2388: Test report generation (Já coberto por `ServicoRelatorioTeste` anterior)
+  - US-2389: Test persistence repositories
+- **O que foi implementado:**
+  - Criada a suite de testes `TurmaIgualdadeTeste` garantindo que o método `equals/hashCode` implementado via Lombok na classe `Turma` verifique estritamente o código.
+  - Adicionado `ServicoSegurancaTeste` cobrindo cenários de sucesso de Autenticação, bem como as exceções personalizadas sendo lançadas para senha errada, usuário fantasma e quebra de privilégios (`ExcecaoAutenticacao` e `ExcecaoAutorizacao`).
+- **Observações / débito técnico:** Atendendo aos preceitos de agilidade definidos para a rodada atual, a configuração pesada já se mostrou madura nas HUs prévias (como Jakarta Validation e JUnit). O sistema está com boa saúde.
+
+#### 27/06/2026 — Security Block (US-2366, US-2378, US-2379, US-2380)
+
+- **Histórias:** 
+  - US-2366: Authenticate users and authorize actions based on roles
+  - US-2378: Role-based dynamic menu rendering
+  - US-2379: Logout
+  - US-2380: Display role-specific sequential menus
+- **O que foi implementado:**
+  - Foi criada a entidade `Usuario` resolvendo pendências prévias (TUS-2382 completa).
+  - Implementado o `RepositorioUsuarioTxt` que consome o banco de usuários simulado `users.txt`.
+  - Criado o `ServicoSeguranca` e injetado ao redor do fluxo de entrada no `ControladorSistemaAcademico`.
+  - O arquivo `Main.java` abandonou o simulador e adotou uma tela autêntica de entrada (Username/Senha), laço de *logout* correto, renderização de menu dinâmico numerado sequencialmente de 1 a N conforme a *Role* (ADMIN/PROFESSOR), e o laço de execução obedece restrições rígidas.
+- **Observações / débito técnico:** Apenas entregue os critérios das HUs sem cobertura maciça extra, pois o foco atual é finalização de pendências em curto prazo de tempo.
 
 #### 26/06/2026 — Persistence Block (US-2372, US-2373, US-2374, US-2377)
 

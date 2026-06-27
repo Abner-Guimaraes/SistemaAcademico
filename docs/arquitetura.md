@@ -21,10 +21,14 @@ Este documento registra decisões de arquitetura, design de código, padrões ad
 | ADR-008 | Abstração de Repositório para Persistência | 26/06/2026 | Aceita |
 | ADR-009 | Extração da Lógica de Relatórios para ServicoRelatorio | 26/06/2026 | Aceita |
 | ADR-010 | Strategy e Factory para Configuração de Persistência (ServicoPersistencia) | 26/06/2026 | Aceita |
+| ADR-011 | Segregação do Fluxo de Segurança e Repository (ServicoSeguranca) | 27/06/2026 | Aceita |
+| ADR-012 | Refatoração e Desmembramento da Camada de Serviços | 27/06/2026 | Aceita |
+| ADR-013 | Implementação de Logging e Auditoria Descentralizada | 27/06/2026 | Aceita |
 
 ---
 
 ## ADR-001 — Uso do Padrão Factory para Criação de Avaliações
+
 
 | Campo | Conteúdo |
 |-------|----------|
@@ -273,3 +277,68 @@ Desacopla de vez a Controladora principal da infraestrutura de I/O. As requisiç
 
 ### Consequências
 - **Positivas:** Flexibilidade absoluta no formato dos dados sem mexer no modelo ou nos outros controladores. Assegura também a restrição de perfil para a configuração do sistema em apenas um local.
+
+---
+
+## ADR-011 — Segregação do Fluxo de Segurança e Repository (ServicoSeguranca)
+
+| Campo | Conteúdo |
+|-------|----------|
+| **Status** | Aceita |
+| **Data** | 27/06/2026 |
+| **Autor(es)** | Desenvolvedor |
+| **História relacionada** | US-2366, US-2378, US-2379, US-2380 |
+
+### Contexto / Problema
+O sistema simulava o login apenas pedindo a "Role" (ADMIN ou PROFESSOR) sem checar credenciais. Com a implementação da US-2366, foi necessário verificar senhas reais e carregar dados de um arquivo de configuração `users.txt`. Misturar essa responsabilidade de login e parsing de TXT com os serviços de Turma ou os controladores de negócio poluiria severamente o escopo do domínio.
+
+### Decisão Tomada
+Foram criadas a entidade `Usuario`, a interface abstrata `RepositorioUsuario`, sua implementação concreta `RepositorioUsuarioTxt` (Repository Pattern) e o serviço dedicado `ServicoSeguranca` na camada de serviços. A orquestração (injeção de dependência) ocorre no construtor de `SistemaAcademico` (Singleton) e o método `autenticar()` é exposto pelo `ControladorSistemaAcademico`. A UI (`Main.java`) gerencia dinamicamente as opções do menu consultando os privilégios do `Usuario` logado.
+
+### Justificativa
+Desacopla regras de identidade e autorização (Security Domain) do domínio core Acadêmico. A adoção da interface de repositório permite, no futuro, migrar facilmente de um TXT para um banco de dados relacional sem modificar uma única linha do `ServicoSeguranca` ou do Controlador. O isolamento no serviço dedicado cumpre com o Single Responsibility Principle (SRP).
+
+### Consequências
+- **Positivas:** Clara fronteira arquitetural entre Domínio Acadêmico e Autenticação. Menu dinâmico é inteiramente governado por informações de sessão válidas.
+- **Negativas:** Maior número de classes para um sistema pequeno (overengineering preventivo), mas plenamente alinhado aos princípios de qualidade estrutural exigidos.
+
+---
+
+## ADR-012 — Refatoração e Desmembramento da Camada de Serviços
+
+| Campo | Conteúdo |
+|-------|----------|
+| **Status** | Aceita |
+| **Data** | 27/06/2026 |
+| **Autor(es)** | Desenvolvedor |
+| **História relacionada** | TUS-2396 a TUS-2405 |
+
+### Contexto / Problema
+A classe `ServicoTurma` acumulava funções relativas ao gerenciamento de `Turma` e instanciação/validação de `Avaliacao`. Controladores secundários como `ControladorTurma` limitavam a injeção limpa de dependência.
+
+### Decisão Tomada
+Criação do `ServicoAvaliacao` separando as obrigações (SRP) e simplificação massiva do `ControladorSistemaAcademico`, que passou a orquestrar os cinco serviços principais de forma isolada.
+
+### Justificativa
+Aumento drástico de coesão, deixando a arquitetura alinhada perfeitamente com os preceitos SOLID. Facilita muito a futura implementação do JavaFX.
+
+---
+
+## ADR-013 — Implementação de Logging e Auditoria Descentralizada
+
+| Campo | Conteúdo |
+|-------|----------|
+| **Status** | Aceita |
+| **Data** | 27/06/2026 |
+| **Autor(es)** | Desenvolvedor |
+| **História relacionada** | TUS-2390 a TUS-2395 |
+
+### Contexto / Problema
+Débito técnico: não havia rastreabilidade no sistema para autenticações falhas, tentativas de violação de perfil, e relatórios importantes.
+
+### Decisão Tomada
+Utilização do `java.util.logging.Logger` instanciado localmente nas classes chave (`ServicoSeguranca`, `ServicoPersistencia`, `ServicoRelatorio`) emitindo os níveis `INFO` e `WARNING`.
+
+### Justificativa
+Sendo uma biblioteca built-in do Java, não inflou o POM.xml e resolve o problema de rastreabilidade de forma limpa, simples e thread-safe.
+

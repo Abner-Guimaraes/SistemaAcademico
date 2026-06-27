@@ -3,10 +3,13 @@ package org.example.service;
 import java.util.List;
 import org.example.model.Turma;
 import org.example.model.Avaliacao;
+import java.util.logging.Logger;
 
 public class ServicoRelatorio {
+    private static final Logger logger = Logger.getLogger(ServicoRelatorio.class.getName());
     
     public String gerarResumoAvaliacoes(List<Turma> turmas, String usuarioLogado) {
+        logger.info("Relatório de Resumo de Avaliações gerado pelo usuário: " + usuarioLogado);
         StringBuilder sb = new StringBuilder();
         sb.append("--- Relatório de Resumo de Avaliações ---\n");
         
@@ -35,6 +38,7 @@ public class ServicoRelatorio {
     }
 
     public String gerarRelatorioPesos(List<Turma> turmas, String usuarioLogado) {
+        logger.info("Relatório de Pesos das Avaliações gerado pelo usuário: " + usuarioLogado);
         StringBuilder sb = new StringBuilder();
         sb.append("--- Relatório de Pesos das Avaliações ---\n");
         
@@ -63,8 +67,10 @@ public class ServicoRelatorio {
 
     public String gerarRelatorioPersistencia(String tipoAtual, String usuarioLogado) {
         if (!"ADMIN".equals(usuarioLogado)) {
+            logger.warning("Falha de autorização: Tentativa de gerar relatório de persistência por " + usuarioLogado);
             throw new org.example.exception.ExcecaoAutorizacao("Operação negada: Apenas administradores podem gerar relatório de persistência.");
         }
+        logger.info("Relatório de Persistência gerado pelo administrador.");
         return "--- Relatório de Configuração de Persistência ---\nTipo de Persistência Atual: " + tipoAtual + "\n";
     }
 }

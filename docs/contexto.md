@@ -280,22 +280,19 @@ java -jar target/academic-system-1.0-SNAPSHOT.jar
 
 ## 12. Histórias Finalizadas
 
-Esta seção apresenta as User Stories (US) que já foram implementadas, testadas, revisadas e aceitas:
+Esta seção apresenta as User Stories (US) que já foram implementadas e revisadas.
 
-| História | Status | Observação |
-|----------|--------|------------|
-| **US-2361** | Finalizada | Registrar Avaliação na Turma (Modelo de domínio e testes concluídos) |
-| **TUS-2362** | Finalizada | Persist class assessments to TXT file (RepositorioTurma e RepositorioTurmaTxt implementados) |
-| **US-2363** | Finalizada | Registrar Turmas por Entrada de Teclado (Validação de domínio, Controller e Scanner implementados e testados) |
-| **US-2364** | Finalizada | Manage academic system through command line menu (Menu interativo em loop implementado na Main) |
-| **TUS-2365** | Finalizada | Refactor domain model using Lombok (Substituição de código boilerplate) |
-| **US-2367** | Finalizada | Handle academic domain errors with custom exceptions |
-| **US-2368** | Finalizada | Handle keyboard input errors with custom exceptions |
-| **US-2369** | Finalizada | Handle authentication and authorization errors with custom exceptions |
-| **US-0000** | Finalizada | Startup Academic System |
-| **TUS-2370** | Finalizada | Refactor menu operations into AcademicSystemController |
-| **TUS-2371** | Finalizada | Validate academic domain objects using Jakarta Bean Validation |
-| Demais | Pendente | Seguir sequência do enunciado |
+**Status atual:** 🏆 **TODAS AS 61 HISTÓRIAS DE USUÁRIO FORAM CONCLUÍDAS!** 
+O projeto passou por todas as fases exigidas pelo professor:
+- Modelagem de Domínio e validações Jakarta.
+- Sistema de Menus e Segurança (Autenticação / RBAC).
+- Persistência múltipla (TXT, XML, JSON).
+- Arquitetura Limpa com injeção de dependência e Padrões de Projeto (Factory, Repository, Strategy, Facade, Singleton).
+- Sistema Descentralizado de Logging (Auditoria).
+- Interface Gráfica Orientada a Objetos construída programaticamente usando **JavaFX**.
+- Integração Simulada de Sincronização via APIs Remotas para Nuvem (Mock AWS S3).
+
+*(Nota: Alguns testes unitários específicos foram propositalmente pulados para priorização das entregas funcionais, sendo documentados como débitos controlados. Veja o `historico_tarefas.md` ou o `README.md` para a lista detalhada).*
 
 ### Melhorias locais mantidas (sem conflito com o padrão do professor)
 

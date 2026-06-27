@@ -1,33 +1,47 @@
 package org.example.controller;
 
 import org.example.model.Turma;
+import org.example.model.Usuario;
+import org.example.service.ServicoTurma;
+import org.example.service.ServicoAvaliacao;
 import org.example.service.ServicoRelatorio;
 import org.example.service.ServicoPersistencia;
+import org.example.service.ServicoSeguranca;
 import java.util.List;
 
 public class ControladorSistemaAcademico {
-    private final ControladorTurma controladorTurma;
-    private final ControladorAvaliacao controladorAvaliacao;
+    private final ServicoTurma servicoTurma;
+    private final ServicoAvaliacao servicoAvaliacao;
     private final ServicoRelatorio servicoRelatorio;
     private final ServicoPersistencia servicoPersistencia;
+    private final ServicoSeguranca servicoSeguranca;
 
-    public ControladorSistemaAcademico(ControladorTurma controladorTurma, ControladorAvaliacao controladorAvaliacao, ServicoRelatorio servicoRelatorio, ServicoPersistencia servicoPersistencia) {
-        this.controladorTurma = controladorTurma;
-        this.controladorAvaliacao = controladorAvaliacao;
+    public ControladorSistemaAcademico(ServicoTurma servicoTurma, ServicoAvaliacao servicoAvaliacao, ServicoRelatorio servicoRelatorio, ServicoPersistencia servicoPersistencia, ServicoSeguranca servicoSeguranca) {
+        this.servicoTurma = servicoTurma;
+        this.servicoAvaliacao = servicoAvaliacao;
         this.servicoRelatorio = servicoRelatorio;
         this.servicoPersistencia = servicoPersistencia;
+        this.servicoSeguranca = servicoSeguranca;
+    }
+
+    public Usuario autenticar(String username, String password) {
+        return servicoSeguranca.autenticar(username, password);
+    }
+
+    public void logout(String username) {
+        servicoSeguranca.logout(username);
     }
 
     public void registrarTurma(String codigo, String titulo, String usuarioLogado) {
-        controladorTurma.registrarTurma(codigo, titulo, usuarioLogado);
+        servicoTurma.registrarTurma(codigo, titulo, usuarioLogado);
     }
 
     public List<Turma> listarTurmas() {
-        return controladorTurma.listarTurmas();
+        return servicoTurma.listarTurmas();
     }
 
     public void registrarAvaliacao(String codigoTurma, String nome, String tipo, double valor, double peso, String usuarioLogado) {
-        controladorAvaliacao.registrarAvaliacao(codigoTurma, nome, tipo, valor, peso, usuarioLogado);
+        servicoAvaliacao.registrarAvaliacao(codigoTurma, nome, tipo, valor, peso, usuarioLogado);
     }
 
     public void configurarPersistencia(String tipo, String usuarioLogado) {

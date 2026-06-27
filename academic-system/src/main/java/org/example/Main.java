@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.model.Turma;
+import org.example.model.Usuario;
 import java.util.Scanner;
 
 public class Main {
@@ -13,26 +14,27 @@ public class Main {
 
         while (executando) {
             System.out.println("\n=== TELA DE LOGIN ===");
-            System.out.println("1. Login como ADMIN");
-            System.out.println("2. Login como PROFESSOR");
-            System.out.println("3. Sair do Sistema");
-            System.out.print("Escolha: ");
-            String opcaoLogin = scanner.nextLine();
+            System.out.print("Usuário (ou 'sair' para encerrar): ");
+            String username = scanner.nextLine();
 
-            if (opcaoLogin.equals("3")) {
+            if (username.equalsIgnoreCase("sair")) {
                 executando = false;
                 break;
             }
 
-            String usuarioLogado = "";
-            if (opcaoLogin.equals("1")) {
-                usuarioLogado = "ADMIN";
-            } else if (opcaoLogin.equals("2")) {
-                usuarioLogado = "PROFESSOR";
-            } else {
-                System.out.println("Opção inválida. Tente novamente.");
+            System.out.print("Senha: ");
+            String password = scanner.nextLine();
+
+            Usuario usuarioLogadoObj;
+            try {
+                usuarioLogadoObj = controller.autenticar(username, password);
+            } catch (org.example.exception.ExcecaoAutenticacao e) {
+                System.out.println("Erro de Segurança: " + e.getMessage());
                 continue;
             }
+
+            String usuarioLogado = usuarioLogadoObj.getRole();
+            System.out.println("Login efetuado com sucesso como " + usuarioLogado);
 
             boolean logado = true;
             while (logado) {
@@ -98,6 +100,7 @@ public class Main {
                                 System.out.println(controller.gerarRelatorioPesos(usuarioLogado));
                                 break;
                             case "8":
+                                controller.logout(usuarioLogado);
                                 logado = false;
                                 System.out.println("Logout efetuado com sucesso.");
                                 break;
@@ -150,6 +153,7 @@ public class Main {
                                 System.out.println(controller.gerarRelatorioPesos(usuarioLogado));
                                 break;
                             case "5":
+                                controller.logout(usuarioLogado);
                                 logado = false;
                                 System.out.println("Logout efetuado com sucesso.");
                                 break;
