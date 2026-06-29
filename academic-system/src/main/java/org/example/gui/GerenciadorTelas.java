@@ -62,7 +62,7 @@ public class GerenciadorTelas {
 
         Label lblBemVindo = new Label("Bem-vindo(a), " + usuarioLogado.getRole());
         lblBemVindo.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
-        
+
         Button btnLogout = new Button("Logout");
         btnLogout.setOnAction(e -> {
             controller.logout(usuarioLogado.getUsername());
@@ -81,10 +81,10 @@ public class GerenciadorTelas {
         if (usuarioLogado.getRole().equals("ADMIN")) {
             Button btnCadastrarTurma = new Button("1. Cadastrar Turma");
             btnCadastrarTurma.setOnAction(e -> mostrarTelaCadastroTurma());
-            
+
             Button btnConfigPersistencia = new Button("2. Configurar Persistência");
             btnConfigPersistencia.setOnAction(e -> mostrarTelaConfigPersistencia());
-            
+
             Button btnSalvarDados = new Button("3. Salvar Dados");
             btnSalvarDados.setOnAction(e -> {
                 try {
@@ -94,10 +94,10 @@ public class GerenciadorTelas {
                     mostrarAlertaErro("Erro ao Salvar", ex.getMessage());
                 }
             });
-            
+
             Button btnListarTurmas = new Button("4. Listar Turmas");
             btnListarTurmas.setOnAction(e -> mostrarTelaListarTurmas());
-            
+
             Button btnRelatorios = new Button("5. Relatórios");
             btnRelatorios.setOnAction(e -> mostrarTelaRelatorios());
 
@@ -105,13 +105,13 @@ public class GerenciadorTelas {
         } else if (usuarioLogado.getRole().equals("PROFESSOR")) {
             Button btnCadastrarAvaliacao = new Button("1. Cadastrar Avaliação");
             btnCadastrarAvaliacao.setOnAction(e -> mostrarTelaCadastroAvaliacao());
-            
+
             Button btnListarTurmas = new Button("2. Listar Turmas");
             btnListarTurmas.setOnAction(e -> mostrarTelaListarTurmas());
-            
+
             Button btnRelatorios = new Button("3. Relatórios");
             btnRelatorios.setOnAction(e -> mostrarTelaRelatorios());
-            
+
             menu.getChildren().addAll(btnCadastrarAvaliacao, btnListarTurmas, btnRelatorios);
         }
 
@@ -122,16 +122,17 @@ public class GerenciadorTelas {
 
     private void mostrarTelaCadastroTurma() {
         VBox vbox = criarLayoutBase("Cadastrar Turma");
-        
+
         TextField txtCodigo = new TextField();
         txtCodigo.setPromptText("Código da Turma");
         TextField txtTitulo = new TextField();
         txtTitulo.setPromptText("Título da Turma");
-        
+
         Button btnSalvar = new Button("Salvar Turma");
         btnSalvar.setOnAction(e -> {
             try {
-                controller.registrarTurma(txtCodigo.getText(), txtTitulo.getText(), usuarioLogado.getUsername());
+                // CORRIGIDO: Passando o Role (ADMIN) ao invés do Username
+                controller.registrarTurma(txtCodigo.getText(), txtTitulo.getText(), usuarioLogado.getRole());
                 mostrarAlertaSucesso("Sucesso", "Turma registrada com sucesso!");
                 mostrarMenuPrincipal();
             } catch (Exception ex) {
@@ -150,7 +151,7 @@ public class GerenciadorTelas {
         txtCodigoTurma.setPromptText("Código da Turma");
         TextField txtNome = new TextField();
         txtNome.setPromptText("Nome da Avaliação");
-        
+
         ComboBox<String> cbTipo = new ComboBox<>();
         cbTipo.getItems().addAll("Prova", "Trabalho Prático", "Seminário", "Atividade");
         cbTipo.setPromptText("Tipo de Avaliação");
@@ -165,7 +166,8 @@ public class GerenciadorTelas {
             try {
                 double valor = Double.parseDouble(txtValor.getText());
                 double peso = Double.parseDouble(txtPeso.getText());
-                controller.registrarAvaliacao(txtCodigoTurma.getText(), txtNome.getText(), cbTipo.getValue(), valor, peso, usuarioLogado.getUsername());
+                // CORRIGIDO: Passando o Role ao invés do Username
+                controller.registrarAvaliacao(txtCodigoTurma.getText(), txtNome.getText(), cbTipo.getValue(), valor, peso, usuarioLogado.getRole());
                 mostrarAlertaSucesso("Sucesso", "Avaliação cadastrada com sucesso!");
                 mostrarMenuPrincipal();
             } catch (NumberFormatException ex) {
@@ -181,15 +183,16 @@ public class GerenciadorTelas {
 
     private void mostrarTelaConfigPersistencia() {
         VBox vbox = criarLayoutBase("Configurar Persistência");
-        
+
         ComboBox<String> cbTipo = new ComboBox<>();
         cbTipo.getItems().addAll("TXT", "XML", "JSON");
         cbTipo.setPromptText("Selecione o Formato");
-        
+
         Button btnSalvar = new Button("Aplicar");
         btnSalvar.setOnAction(e -> {
             try {
-                controller.configurarPersistencia(cbTipo.getValue(), usuarioLogado.getUsername());
+                // CORRIGIDO: Passando o Role ao invés do Username
+                controller.configurarPersistencia(cbTipo.getValue(), usuarioLogado.getRole());
                 mostrarAlertaSucesso("Sucesso", "Persistência configurada para " + cbTipo.getValue());
                 mostrarMenuPrincipal();
             } catch (Exception ex) {
@@ -250,7 +253,7 @@ public class GerenciadorTelas {
         VBox vbox = criarLayoutBase("Lista de Turmas");
         TextArea txtSaida = new TextArea();
         txtSaida.setEditable(false);
-        
+
         StringBuilder sb = new StringBuilder();
         for (Turma t : controller.listarTurmas()) {
             sb.append(t.getCodigo()).append(" - ").append(t.getTitulo()).append("\n");
@@ -265,13 +268,13 @@ public class GerenciadorTelas {
     private VBox criarLayoutBase(String titulo) {
         VBox vbox = new VBox(15);
         vbox.setPadding(new Insets(20));
-        
+
         Label lblTitulo = new Label(titulo);
         lblTitulo.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
-        
+
         Button btnVoltar = new Button("Voltar");
         btnVoltar.setOnAction(e -> mostrarMenuPrincipal());
-        
+
         vbox.getChildren().addAll(btnVoltar, lblTitulo);
         return vbox;
     }

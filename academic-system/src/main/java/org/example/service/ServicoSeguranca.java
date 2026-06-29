@@ -25,6 +25,14 @@ public class ServicoSeguranca {
         return usuario.get();
     }
 
+    public void autorizarAdmin(String role) {
+        if (!"ADMIN".equals(role)) {
+            logger.warning("Tentativa de acesso negada para o papel: " + role);
+            throw new ExcecaoAutorizacao("Acesso negado: Requer privilégios de administrador.");
+        }
+        logger.info("Autorização de administrador concedida.");
+    }
+
     public void logout(String username) {
         logger.info("Usuário efetuou logout com sucesso: " + username);
     }
