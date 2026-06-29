@@ -1,0 +1,15 @@
+{
+  "turmas": [
+    {
+      "codigo": "CC3A",
+      "titulo": "POO",
+      "avaliacoes": [
+        {
+          "tipo": "Prova",
+          "valor": 10,
+          "peso": 0,5
+        }
+      ]
+    }
+  ]
+}
