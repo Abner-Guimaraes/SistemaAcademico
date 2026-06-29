@@ -11,17 +11,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Set up JDK 21
-      uses: actions/setup-java@v4
-      with:
-        java-version: '21'
-        distribution: 'temurin'
-        cache: maven
-        
-    - name: Build with Maven
-      run: mvn -B package --file academic-system/pom.xml -DskipTests
-      
-    - name: Run Tests and Generate Coverage (TUS-2416)
-      run: mvn -B test jacoco:report --file academic-system/pom.xml
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn -B package --file academic-system-java/pom.xml -DskipTests
+
+      - name: Run Tests and Generate Coverage (TUS-2416)
+        run: mvn -B test jacoco:report --file academic-system-java/pom.xml
